@@ -167,6 +167,7 @@ class Picarx(object):
         self.dir_servo_pin.angle(value)
 
     def set_dir_servo_angle(self, value):
+        logging.debug(f"changing servo angle to: {value}")
         self.dir_current_angle = constrain(value, self.DIR_MIN, self.DIR_MAX)
         angle_value  = self.dir_current_angle + self.dir_cali_val
         self.dir_servo_pin.angle(angle_value)
