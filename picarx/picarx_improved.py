@@ -212,7 +212,7 @@ class Picarx(object):
 
     def forward(self, speed):
         logging.debug(f"forward: {speed}")
-        current_angle = self.dir_current_angle
+        current_angle = 20
         if current_angle != 0:
             # implement ackerman steering approximation
             abs_current_angle = abs(current_angle)
