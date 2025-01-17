@@ -298,6 +298,7 @@ class Picarx(object):
         """Moves the car forward in straight line or with different steering angles"""
         logging.debug(f"moving forward: speed: {speed}, angle: {angle}, duration: {duration}")
         px.set_dir_servo_angle(angle)
+        time.sleep(0.1)
         px.forward(speed)
         time.sleep(duration)
         self.stop()
@@ -306,6 +307,7 @@ class Picarx(object):
         """Moves the car backward in straight line or with different steering angles"""
         logging.debug(f"moving backward: speed: {speed}, angle: {angle}, duration: {duration}")
         px.set_dir_servo_angle(angle)
+        time.sleep(0.1)
         px.backward(speed)
         time.sleep(duration)
         self.stop()
