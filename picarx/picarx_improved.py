@@ -195,6 +195,7 @@ class Picarx(object):
         self.set_motor_speed(2, speed)
 
     def backward(self, speed):
+        logging.debug(f"backward: {speed}")
         current_angle = self.dir_current_angle
         if current_angle != 0:
             # implement ackerman steering approximation
@@ -297,7 +298,6 @@ class Picarx(object):
         """Moves the car forward in straight line or with different steering angles"""
         logging.debug(f"moving forward: speed: {speed}, angle: {angle}, duration: {duration}")
         px.set_dir_servo_angle(angle)
-        time.sleep(0.2)
         px.forward(speed)
         time.sleep(duration)
         self.stop()
@@ -306,7 +306,6 @@ class Picarx(object):
         """Moves the car backward in straight line or with different steering angles"""
         logging.debug(f"moving backward: speed: {speed}, angle: {angle}, duration: {duration}")
         px.set_dir_servo_angle(angle)
-        time.sleep(0.2)
         px.backward(speed)
         time.sleep(duration)
         self.stop()
