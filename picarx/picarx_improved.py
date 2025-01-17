@@ -295,7 +295,7 @@ class Picarx(object):
 # FUNCTIONS FOR PART 2.8 OF HOMEWORK
     def move_with_steering(self, speed, angle):
         """Moves the car forward and backward in straight lines or with different steering angles"""
-        self.set_steering_angle(angle)
+        self.set_dir_servo_angle(angle)
         self.forward(speed)
         self.backward(speed)
         self.stop()
