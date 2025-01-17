@@ -88,7 +88,7 @@ class Picarx(object):
         self.cali_dir_value = self.config_flie.get("picarx_dir_motor", default_value="[1, 1]")
         self.cali_dir_value = [int(i.strip()) for i in self.cali_dir_value.strip().strip("[]").split(",")]
         self.cali_speed_value = [0, 0]
-        self.dir_current_angle = 0
+        self.dir_current_angle = 10
         # init pwm
         for pin in self.motor_speed_pins:
             pin.period(self.PERIOD)
