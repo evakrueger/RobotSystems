@@ -307,14 +307,13 @@ class Picarx(object):
         px.set_dir_servo_angle(angle)
         px.backward(speed)
         time.sleep(duration)
-        self.stop()
+        # self.stop()
     
     def parallel_park(self, direction, speed=10):
         """ Parallel parking on the left or right"""
         logging.debug(f"parallel parking: {direction}")
         if direction == 'left':
             self.move_backward_with_steering(speed, -30, 1)
-            time.sleep(1)
             self.move_backward_with_steering(speed, 30, 1)
         elif direction == 'right':
             self.move_backward_with_steering(speed, 30, 1)
