@@ -2,6 +2,7 @@ import time
 import os
 import math
 import logging
+import numpy as np
 logging_format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=logging_format, level=logging.INFO, datefmt="%H:%M:%S")
 logging.getLogger().setLevel(logging.DEBUG)
@@ -200,31 +201,43 @@ class Picarx(object):
             if abs_current_angle > self.DIR_MAX:
                 abs_current_angle = self.DIR_MAX
             power_scale = (100 - abs_current_angle) / 100.0 
+            # if (current_angle / abs_current_angle) > 0:
+            #     self.set_motor_speed(1, -1*speed)
+            #     self.set_motor_speed(2, speed * power_scale)
+            # else:
+            #     self.set_motor_speed(1, -1*speed * power_scale)
+            #     self.set_motor_speed(2, speed )
             if (current_angle / abs_current_angle) > 0:
-                self.set_motor_speed(1, -1*speed)
-                self.set_motor_speed(2, speed * power_scale)
+                self.set_motor_speed(1, -speed*(1+np.sin(current_angle)))
+                self.set_motor_speed(2, speed*(1+np.sin(current_angle)))
             else:
-                self.set_motor_speed(1, -1*speed * power_scale)
-                self.set_motor_speed(2, speed )
+                self.set_motor_speed(1, -speed*(1+np.sin(current_angle)))
+                self.set_motor_speed(2, speed*(1+np.sin(current_angle)))
         else:
             self.set_motor_speed(1, -1*speed)
             self.set_motor_speed(2, speed)  
 
     def forward(self, speed):
         logging.debug(f"forward: {speed}")
-        current_angle = 20
+        current_angle = self.dir_current_angle
         if current_angle != 0:
             # implement ackerman steering approximation
             abs_current_angle = abs(current_angle)
             if abs_current_angle > self.DIR_MAX:
                 abs_current_angle = self.DIR_MAX
             power_scale = (100 - abs_current_angle) / 100.0
+            # if (current_angle / abs_current_angle) > 0:
+            #     self.set_motor_speed(1, 1*speed * power_scale)
+            #     self.set_motor_speed(2, -speed) 
+            # else:
+            #     self.set_motor_speed(1, speed)
+            #     self.set_motor_speed(2, -1*speed * power_scale)
             if (current_angle / abs_current_angle) > 0:
-                self.set_motor_speed(1, 1*speed * power_scale)
-                self.set_motor_speed(2, -speed) 
+                self.set_motor_speed(1, speed*(1+np.sin(current_angle)))
+                self.set_motor_speed(2, -speed*(1+np.sin(current_angle)))
             else:
-                self.set_motor_speed(1, speed)
-                self.set_motor_speed(2, -1*speed * power_scale)
+                self.set_motor_speed(1, speed*(1+np.sin(current_angle)))
+                self.set_motor_speed(2, -speed*(1+np.sin(current_angle)))
         else:
             self.set_motor_speed(1, speed)
             self.set_motor_speed(2, -1*speed)                  
