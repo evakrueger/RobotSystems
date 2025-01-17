@@ -291,10 +291,19 @@ class Picarx(object):
         self.set_dir_servo_angle(0)
         self.set_cam_tilt_angle(0)
         self.set_cam_pan_angle(0)
+    
+# FUNCTIONS FOR PART 2.8 OF HOMEWORK
+    def move_with_steering(self, speed, angle):
+        """Moves the car forward and backward in straight lines or with different steering angles"""
+        self.set_steering_angle(angle)
+        self.forward(speed)
+        self.backward(speed)
+        self.stop()
 
 if __name__ == "__main__":
     px = Picarx()
-    px.set_dir_servo_angle(-10)
-    px.forward(50)
+    # px.set_dir_servo_angle(-10)
+    # px.forward(50)
+    px.move_with_steering(10, 10)
     time.sleep(1)
     px.stop()
