@@ -293,18 +293,42 @@ class Picarx(object):
         self.set_cam_pan_angle(0)
     
 # FUNCTIONS FOR PART 2.8 OF HOMEWORK
-    def move_with_steering(self, speed, angle, duration):
-        """Moves the car forward and backward in straight lines or with different steering angles"""
+    def move_forward_with_steering(self, speed, angle, duration):
+        """Moves the car forward in straight line or with different steering angles"""
         px.set_dir_servo_angle(angle)
         px.forward(speed)
         time.sleep(duration)
+        self.stop()
+    
+    def move_backward_with_steering(self, speed, angle, duration):
+        """Moves the car backward in straight line or with different steering angles"""
+        px.set_dir_servo_angle(angle)
         px.backward(speed)
         time.sleep(duration)
+        self.stop()
+    
+    def parallel_park(self, direction, speed=10):
+        """ Parallel parking on the left or right"""
+        if direction == 'left':
+            self.set_steering_angle(-30)
+            self.set_motor_speed(-speed, -speed)
+            time.sleep(1)  # Reverse into the parking space at an angle
+            self.set_steering_angle(30)
+            self.set_motor_speed(-speed, -speed)
+            time.sleep(1)  # Straighten out
+        elif direction == 'right':
+            self.set_steering_angle(30)
+            self.set_motor_speed(-speed, -speed)
+            time.sleep(1)
+            self.set_steering_angle(-30)
+            self.set_motor_speed(-speed, -speed)
+            time.sleep(1)
         self.stop()
 
 if __name__ == "__main__":
     px = Picarx()
-    px.move_with_steering(50, 10, 1)
+    px.move_forward_with_steering(50, -10, 1)
+    # px.move_backward_with_steering(50, 10, 1)
     # px.set_dir_servo_angle(-10)
     # px.forward(50)
     # time.sleep(1)
