@@ -299,16 +299,16 @@ class Picarx(object):
     def move_forward_with_steering(self, speed, angle, duration):
         """Moves the car forward in straight line or with different steering angles"""
         logging.debug(f"moving forward: speed: {speed}, angle: {angle}, duration: {duration}")
-        px.set_dir_servo_angle(angle)
+        self.set_dir_servo_angle(angle)
         time.sleep(0.1)
-        px.forward(speed)
+        self.forward(speed)
         time.sleep(duration)
     
     def move_backward_with_steering(self, speed, angle, duration):
         """Moves the car backward in straight line or with different steering angles"""
         logging.debug(f"moving backward: speed: {speed}, angle: {angle}, duration: {duration}")
-        px.set_dir_servo_angle(angle)
-        px.backward(speed)
+        self.set_dir_servo_angle(angle)
+        self.backward(speed)
         time.sleep(duration)
     
     def parallel_park(self, direction, speed=25, duration=2):
@@ -334,14 +334,13 @@ class Picarx(object):
             self.move_backward_with_steering(speed, -45, duration)
             self.move_forward_with_steering(speed, 15, duration)
         self.stop()
-        logging.info(f"Three-point turn to the {direction} completed.")
 
 
 if __name__ == "__main__":
     px = Picarx()
     # px.move_forward_with_steering(50, 10, 1)
     # px.move_backward_with_steering(50, 10, 1)
-    px.k_turn('left')
+    # px.k_turn('left')
     # px.set_dir_servo_angle(-10)
     # px.forward(50)
     # time.sleep(1)
