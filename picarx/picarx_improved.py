@@ -269,6 +269,7 @@ class Picarx(object):
 
     def get_grayscale_data(self):
         logging.debug(f"getting grayscale data")
+        logging.debug(f"{self.grayscale.read()}")
         return list.copy(self.grayscale.read())
 
     def get_line_status(self,gm_val_list):
