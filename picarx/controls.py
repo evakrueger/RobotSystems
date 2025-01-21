@@ -5,13 +5,18 @@ logging.basicConfig(format=logging_format, level=logging.INFO, datefmt="%H:%M:%S
 logging.getLogger().setLevel(logging.DEBUG)
 
 
-class Sensing(object):
+class Sensing():
     def __init__(self):
         self.px = Picarx(self)
     
     def get_grayscale(self):
         return self.px.get_grayscale_data()
 
+class Interpretation():
+    def __init__(self, sensitivity, polarity):
+        self.sensitivity = sensitivity
+        self.polarity = polarity
+
 if __name__ == "__main__":
-    px = Picarx()
+    px = Sensing()
     logging.debug(f"{px.get_grayscale_data()}")
