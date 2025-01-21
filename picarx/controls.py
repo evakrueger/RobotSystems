@@ -19,4 +19,4 @@ class Interpretation():
 
 if __name__ == "__main__":
     px = Sensing()
-    logging.debug(f"{px.get_grayscale_data()}")
+    logging.debug(f"{px.get_grayscale()}")
