@@ -301,7 +301,6 @@ class Picarx(object):
         time.sleep(0.1)
         px.forward(speed)
         time.sleep(duration)
-        self.stop()
     
     def move_backward_with_steering(self, speed, angle, duration):
         """Moves the car backward in straight line or with different steering angles"""
@@ -310,7 +309,6 @@ class Picarx(object):
         time.sleep(0.1)
         px.backward(speed)
         time.sleep(duration)
-        self.stop()
     
     def parallel_park(self, direction, speed=80):
         """ Parallel parking on the left or right"""
