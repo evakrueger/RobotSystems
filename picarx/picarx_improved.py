@@ -311,22 +311,37 @@ class Picarx(object):
         px.backward(speed)
         time.sleep(duration)
     
-    def parallel_park(self, direction, speed=25):
+    def parallel_park(self, direction, speed=25, duration=2):
         """ Parallel parking on the left or right"""
         logging.debug(f"parallel parking: {direction}")
         if direction == 'left':
-            self.move_backward_with_steering(speed, -30, 2)
-            self.move_backward_with_steering(speed, 22, 2)
+            self.move_backward_with_steering(speed, -30, duration)
+            self.move_backward_with_steering(speed, 22, duration)
         elif direction == 'right':
-            self.move_backward_with_steering(speed, 22, 2)
-            self.move_backward_with_steering(speed, -30, 2)
+            self.move_backward_with_steering(speed, 22, duration)
+            self.move_backward_with_steering(speed, -30, duration)
         self.stop()
+    
+    def k_turn(self, direction, speed=25, duration=2):
+        """ K turn to the left or right"""
+        logging.debug(f"K-turn to the {direction} at speed {speed}.")
+        if direction == 'left':
+            self.move_forward_with_steering(speed, -30, duration)
+            self.move_backward_with_steering(speed, 30, duration)
+            self.move_forward_with_steering(speed, 0, duration)
+        elif direction == 'right':
+            self.move_forward_with_steering(speed, 30, duration)
+            self.move_backward_with_steering(speed, -30, duration)
+            self.move_forward_with_steering(speed, 0, duration)
+        self.stop()
+        logging.info(f"Three-point turn to the {direction} completed.")
+
 
 if __name__ == "__main__":
     px = Picarx()
     # px.move_forward_with_steering(50, 10, 1)
     # px.move_backward_with_steering(50, 10, 1)
-    px.parallel_park('left')
+    px.k_turn('left')
     # px.set_dir_servo_angle(-10)
     # px.forward(50)
     # time.sleep(1)
