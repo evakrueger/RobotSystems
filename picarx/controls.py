@@ -7,7 +7,7 @@ logging.getLogger().setLevel(logging.DEBUG)
 
 class Sensing():
     def __init__(self):
-        self.px = Picarx(self)
+        self.px = Picarx()
     
     def get_grayscale(self):
         return self.px.get_grayscale_data()
