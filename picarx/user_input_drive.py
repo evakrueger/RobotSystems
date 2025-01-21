@@ -8,8 +8,10 @@ if __name__ == "__main__":
             user_angle = int(input("At what angle would you like to drive? "))
             if user_command == "1":
                 px.move_forward_with_steering(25, user_angle, 2)
+                self.stop()
             elif user_command == "2":
                 px.move_backward_with_steering(25, user_angle, 2)
+                self.stop()
         elif user_command == "3" or user_command == "4":
             user_direction = input("Which direction would you like to park/k-turn? ")
             if user_command == "3":
