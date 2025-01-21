@@ -36,7 +36,8 @@ an option to have the “target” darker or lighter than the surrounding floor.
 if __name__ == "__main__":
     px = Sensing()
     px_interpret = Interpretation()
-    grayscale_values = px.get_grayscale()
-    logging.debug(f"{grayscale_values}")
-    line_position = px_interpret.line_position(grayscale_values)
+    while True:
+        grayscale_values = px.get_grayscale()
+        logging.debug(f"{grayscale_values}")
+        line_position = px_interpret.line_position(grayscale_values)
     
