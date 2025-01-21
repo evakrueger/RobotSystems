@@ -322,17 +322,17 @@ class Picarx(object):
             self.move_backward_with_steering(speed, -30, duration)
         self.stop()
     
-    def k_turn(self, direction, speed=25, duration=3):
+    def k_turn(self, direction, speed=25, duration=2):
         """ K turn to the left or right"""
         logging.debug(f"K-turn to the {direction} at speed {speed}.")
         if direction == 'left':
-            self.move_forward_with_steering(speed, -30, duration)
-            self.move_backward_with_steering(speed, 30, duration)
-            self.move_forward_with_steering(speed, -5, duration)
+            self.move_forward_with_steering(speed, -90, duration)
+            self.move_backward_with_steering(speed, 45, duration)
+            self.move_forward_with_steering(speed, -15, duration)
         elif direction == 'right':
-            self.move_forward_with_steering(speed, 30, duration)
-            self.move_backward_with_steering(speed, -30, duration)
-            self.move_forward_with_steering(speed, 5, duration)
+            self.move_forward_with_steering(speed, 90, duration)
+            self.move_backward_with_steering(speed, -45, duration)
+            self.move_forward_with_steering(speed, 15, duration)
         self.stop()
         logging.info(f"Three-point turn to the {direction} completed.")
 
