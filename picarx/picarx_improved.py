@@ -328,11 +328,11 @@ class Picarx(object):
         if direction == 'left':
             self.move_forward_with_steering(speed, -30, duration)
             self.move_backward_with_steering(speed, 30, duration)
-            self.move_forward_with_steering(speed, 0, duration)
+            self.move_forward_with_steering(speed, -5, duration)
         elif direction == 'right':
             self.move_forward_with_steering(speed, 30, duration)
             self.move_backward_with_steering(speed, -30, duration)
-            self.move_forward_with_steering(speed, 0, duration)
+            self.move_forward_with_steering(speed, 5, duration)
         self.stop()
         logging.info(f"Three-point turn to the {direction} completed.")
 
