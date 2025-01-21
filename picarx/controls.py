@@ -1,5 +1,6 @@
 from picarx_improved import Picarx
 import logging
+import math
 logging_format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=logging_format, level=logging.INFO, datefmt="%H:%M:%S")
 logging.getLogger().setLevel(logging.DEBUG)
@@ -13,7 +14,7 @@ class Sensing():
         return self.px.get_grayscale_data()
 
 class Interpretation():
-    def __init__(self, sensitivity=100, polarity="darker"): # sensitivity and polarity should have default values
+    def __init__(self, sensitivity=2.0, polarity="darker"): # sensitivity and polarity should have default values
         self.sensitivity = sensitivity
         self.polarity = polarity
     
@@ -28,9 +29,19 @@ an option to have the “target” darker or lighter than the surrounding floor.
         center_grayscale = grayscale_data[1]
         right_grayscale = grayscale_data[2]
         logging.debug(f"left, center, and right divided by center: {left_grayscale/center_grayscale}, {center_grayscale/center_grayscale}, {right_grayscale/center_grayscale}")
-        
-
-        return {"position": "center", "offset": "slight"}
+        left_norm = left_grayscale/center_grayscale
+        right_norm = right_grayscale/center_grayscale
+        if math.isclose(left_norm, 1.0, abs_tol=0.1):
+            return{"position": "slightly left"}
+        if math.isclose(right_norm, 1.0, abs_tol=0.1):
+            return{"position": "slightly right"}
+        if(left_norm > self.sensitivity*1.0):
+            return{"position": "very left"}
+        if(right_norm > self.sensitivity*1.0):
+            return{"position": "very right"}
+        if(left_norm < 0.5 and right_norm < 0.5):
+            return{"position": "center"}
+        return {"position": "center"}
         
 
 if __name__ == "__main__":
@@ -40,4 +51,5 @@ if __name__ == "__main__":
         grayscale_values = px.get_grayscale()
         logging.debug(f"{grayscale_values}")
         line_position = px_interpret.line_position(grayscale_values)
+        logging.debug(f"{line_position}")
     
