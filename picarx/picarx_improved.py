@@ -268,6 +268,7 @@ class Picarx(object):
             raise ValueError("grayscale reference must be a 1*3 list")
 
     def get_grayscale_data(self):
+        logging.debug(f"getting grayscale data")
         return list.copy(self.grayscale.read())
 
     def get_line_status(self,gm_val_list):
@@ -340,7 +341,7 @@ if __name__ == "__main__":
     px = Picarx()
     # px.move_forward_with_steering(50, 10, 1)
     # px.move_backward_with_steering(50, 10, 1)
-    # px.k_turn('left')
+    # px.parallel_park('left')
     # px.set_dir_servo_angle(-10)
     # px.forward(50)
     # time.sleep(1)
