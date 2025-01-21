@@ -211,10 +211,10 @@ class Picarx(object):
             #     self.set_motor_speed(2, speed )
             if (current_angle / abs_current_angle) > 0:
                 self.set_motor_speed(1, -speed*(1+np.sin(current_angle)))
-                self.set_motor_speed(2, speed*(1+np.sin(current_angle)))
+                self.set_motor_speed(2, speed*(1-np.sin(current_angle)))
             else:
                 self.set_motor_speed(1, -speed*(1+np.sin(current_angle)))
-                self.set_motor_speed(2, speed*(1+np.sin(current_angle)))
+                self.set_motor_speed(2, speed*(1-np.sin(current_angle)))
         else:
             self.set_motor_speed(1, -1*speed)
             self.set_motor_speed(2, speed)  
@@ -236,10 +236,10 @@ class Picarx(object):
             #     self.set_motor_speed(2, -1*speed * power_scale)
             if (current_angle / abs_current_angle) > 0:
                 self.set_motor_speed(1, speed*(1+np.sin(current_angle)))
-                self.set_motor_speed(2, -speed*(1+np.sin(current_angle)))
+                self.set_motor_speed(2, -speed*(1-np.sin(current_angle)))
             else:
                 self.set_motor_speed(1, speed*(1+np.sin(current_angle)))
-                self.set_motor_speed(2, -speed*(1+np.sin(current_angle)))
+                self.set_motor_speed(2, -speed*(1-np.sin(current_angle)))
         else:
             self.set_motor_speed(1, speed)
             self.set_motor_speed(2, -1*speed)                  
