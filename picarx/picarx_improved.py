@@ -312,7 +312,7 @@ class Picarx(object):
         time.sleep(duration)
         self.stop()
     
-    def parallel_park(self, direction, speed=10):
+    def parallel_park(self, direction, speed=80):
         """ Parallel parking on the left or right"""
         logging.debug(f"parallel parking: {direction}")
         if direction == 'left':
