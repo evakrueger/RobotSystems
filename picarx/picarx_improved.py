@@ -316,9 +316,9 @@ class Picarx(object):
         logging.debug(f"parallel parking: {direction}")
         if direction == 'left':
             self.move_backward_with_steering(speed, -30, 2)
-            self.move_backward_with_steering(speed, 16, 2)
+            self.move_backward_with_steering(speed, 22, 2)
         elif direction == 'right':
-            self.move_backward_with_steering(speed, 16, 2)
+            self.move_backward_with_steering(speed, 22, 2)
             self.move_backward_with_steering(speed, -30, 2)
         self.stop()
 
