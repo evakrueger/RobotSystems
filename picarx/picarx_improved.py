@@ -326,7 +326,7 @@ if __name__ == "__main__":
     px = Picarx()
     # px.move_forward_with_steering(50, 10, 1)
     # px.move_backward_with_steering(50, 10, 1)
-    px.parallel_park('right')
+    px.parallel_park('left')
     # px.set_dir_servo_angle(-10)
     # px.forward(50)
     # time.sleep(1)
