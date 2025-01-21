@@ -318,8 +318,8 @@ class Picarx(object):
             self.move_backward_with_steering(speed, -30, 2)
             self.move_backward_with_steering(speed, 20, 2)
         elif direction == 'right':
-            self.move_backward_with_steering(speed, 30, 2)
-            self.move_backward_with_steering(speed, -20, 2)
+            self.move_backward_with_steering(speed, 20, 2)
+            self.move_backward_with_steering(speed, -30, 2)
         self.stop()
 
 if __name__ == "__main__":
