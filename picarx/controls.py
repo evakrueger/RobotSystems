@@ -52,5 +52,5 @@ if __name__ == "__main__":
     px_interpret = Interpretation()
     grayscale_values = px.get_grayscale()
     logging.debug(f"{grayscale_values}")
-    line_position = px_interpret.line_position()
+    line_position = px_interpret.line_position(grayscale_values)
     
