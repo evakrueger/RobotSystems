@@ -322,7 +322,7 @@ class Picarx(object):
             self.move_backward_with_steering(speed, -30, duration)
         self.stop()
     
-    def k_turn(self, direction, speed=25, duration=2):
+    def k_turn(self, direction, speed=25, duration=1):
         """ K turn to the left or right"""
         logging.debug(f"K-turn to the {direction} at speed {speed}.")
         if direction == 'left':
