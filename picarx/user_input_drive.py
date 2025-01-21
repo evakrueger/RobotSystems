@@ -16,7 +16,7 @@ if __name__ == "__main__":
             user_direction = input("Which direction would you like to park/k-turn? ")
             if user_command == "3":
                 px.parallel_park(user_direction)
-            elif user_command == "3":
+            elif user_command == "4":
                 px.k_turn(user_direction)
         else:
             break
