@@ -268,7 +268,7 @@ class Picarx(object):
             raise ValueError("grayscale reference must be a 1*3 list")
 
     def get_grayscale_data(self):
-        logging.debug(f"getting grayscale data")
+        # logging.debug(f"getting grayscale data")
         return list.copy(self.grayscale.read())
 
     def get_line_status(self,gm_val_list):
