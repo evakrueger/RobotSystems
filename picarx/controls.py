@@ -16,7 +16,7 @@ class Sensing():
 class Interpretation():
     def __init__(self, sensitivity=2.0, polarity=1): # sensitivity and polarity should have default values
         self.sensitivity = sensitivity
-        self.polarity = polarity # polarity 1 = darker line, -1 = lighter line
+        self.polarity = polarity # polarity -1 = darker line, 1 = lighter line
     
     def line_position(self, grayscale_data):
         """take an input argument of the same format as the output of the
@@ -25,12 +25,12 @@ values (indicative of an edge), and then using the edge location and sign to det
 whether the system is to the left or right of being centered, and whether it is very off-center
 or only slightly off-center. Make this function robust to different lighting conditions, and with
 an option to have the “target” darker or lighter than the surrounding floor."""
-        if self.polarity == -1:
+        if self.polarity == 1:
             logging.debug("lighter")
             grayscale_data = [grayscale_datapoint - min(grayscale_data) for grayscale_datapoint in grayscale_data]
-        elif self.polarity == 1:
+        elif self.polarity == -1:
             logging.debug("darker")
-            grayscale_data = [grayscale_datapoint - max(grayscale_data) for grayscale_datapoint in grayscale_data]
+            grayscale_data = -1*[grayscale_datapoint - max(grayscale_data) for grayscale_datapoint in grayscale_data]
         left_grayscale, center_grayscale, right_grayscale = [abs(value) for value in grayscale_data]
         # logging.debug(f"updated: {left_grayscale}, {center_grayscale}, {right_grayscale}")
         # very left = 1
