@@ -16,7 +16,7 @@ class Sensing():
 class Interpretation():
     def __init__(self, sensitivity=2.0, polarity=1): # sensitivity and polarity should have default values
         self.sensitivity = sensitivity
-        self.polarity = polarity
+        self.polarity = polarity # polarity 1 = darker line, -1 = lighter line
     
     def line_position(self, grayscale_data):
         """take an input argument of the same format as the output of the
@@ -49,7 +49,7 @@ an option to have the “target” darker or lighter than the surrounding floor.
 
 if __name__ == "__main__":
     px_sensing = Sensing()
-    px_interpret = Interpretation(sensitivity=2.0, polarity="lighter")
+    px_interpret = Interpretation(sensitivity=2.0, polarity=-1)
     while True:
         grayscale_values = px_sensing.get_grayscale()
         # logging.debug(f"{grayscale_values}")
