@@ -35,9 +35,13 @@ an option to have the “target” darker or lighter than the surrounding floor.
         if self.polarity == "darker":
             # logging.debug(f"polarity: darker")
             if left_grayscale > right_grayscale:
-                return{"position": "left"}
+                if center_grayscale == 0:
+                    return{"position": "very left"}
+                return{"position": "slightly left"}
             elif right_grayscale > left_grayscale:
-                return{"position": "right"}
+                if center_grayscale == 0:
+                    return{"position": "very right"}
+                return{"position": "slightly right"}
             # if math.isclose(left_norm, 1.0, abs_tol=0.1):
             #     return{"position": "slightly left"}
             # if math.isclose(right_norm, 1.0, abs_tol=0.1):
