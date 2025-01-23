@@ -49,7 +49,7 @@ class Controller():
         
     def follow_line(self, car, line_position):
         logging.debug(f"driving forward at angle: {line_position*self.angle_scale}")
-        car.move_forward_with_steering(speed=10, angle=line_position*self.angle_scale, duration = 0.5)
+        car.move_forward_with_steering(speed=20, angle=line_position*self.angle_scale, duration = 0.5)
 
 if __name__ == "__main__":
     px_sensing = Sensing()
