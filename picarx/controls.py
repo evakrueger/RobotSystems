@@ -32,48 +32,23 @@ an option to have the “target” darker or lighter than the surrounding floor.
         left_grayscale, center_grayscale, right_grayscale = [abs(value) for value in grayscale_data]
         logging.debug(f"updated: {left_grayscale}, {center_grayscale}, {right_grayscale}")
 
-        if self.polarity == "darker":
+        # if self.polarity == "darker":
             # logging.debug(f"polarity: darker")
-            if center_grayscale > left_grayscale and center_grayscale > right_grayscale:
-                return {"position": "sensor"}
-            if left_grayscale > right_grayscale:
-                if center_grayscale == 0:
-                    return{"position": "very left"}
-                return{"position": "slightly left"}
-            elif right_grayscale > left_grayscale:
-                if center_grayscale == 0:
-                    return{"position": "very right"}
-                return{"position": "slightly right"}
-            # if math.isclose(left_norm, 1.0, abs_tol=0.1):
-            #     return{"position": "slightly left"}
-            # if math.isclose(right_norm, 1.0, abs_tol=0.1):
-            #     return{"position": "slightly right"}
-            # if(left_norm > self.sensitivity*1.0):
-            #     return{"position": "very left"}
-            # if(right_norm > self.sensitivity*1.0):
-            #     return{"position": "very right"}
-            # if(left_norm < 0.5 and right_norm < 0.5):
-            #     return{"position": "center"}
-            return {"position": "none"}
-        
-        # elif self.polarity == "lighter":
-        #     # logging.debug(f"polarity: lighter")
-        #     if math.isclose(left_norm, 1.0, abs_tol=0.1):
-        #         return{"position": "slightly left"}
-        #     if math.isclose(right_norm, 1.0, abs_tol=0.1):
-        #         return{"position": "slightly right"}
-        #     if(left_norm < self.sensitivity*1.0):
-        #         return{"position": "very left"}
-        #     if(right_norm < self.sensitivity*1.0):
-        #         return{"position": "very right"}
-        #     if(left_norm < 0.5 and right_norm > 0.5):
-        #         return{"position": "center"}
-        #     return {"position": "none"}
+        if center_grayscale > left_grayscale and center_grayscale > right_grayscale:
+            return {"position": "center"}
+        if left_grayscale > right_grayscale:
+            if center_grayscale == 0:
+                return{"position": "very left"}
+            return{"position": "slightly left"}
+        elif right_grayscale > left_grayscale:
+            if center_grayscale == 0:
+                return{"position": "very right"}
+            return{"position": "slightly right"}
             
 
 if __name__ == "__main__":
     px_sensing = Sensing()
-    px_interpret = Interpretation(sensitivity=2.0, polarity="darker")
+    px_interpret = Interpretation(sensitivity=2.0, polarity="lighter")
     while True:
         grayscale_values = px_sensing.get_grayscale()
         # logging.debug(f"{grayscale_values}")
