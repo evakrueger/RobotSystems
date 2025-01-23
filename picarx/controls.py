@@ -32,19 +32,23 @@ an option to have the “target” darker or lighter than the surrounding floor.
         left_grayscale, center_grayscale, right_grayscale = grayscale_data
         logging.debug(f"updated: {left_grayscale}, {center_grayscale}, {right_grayscale}")
 
-        # if self.polarity == "darker":
-        #     # logging.debug(f"polarity: darker")
-        #     if math.isclose(left_norm, 1.0, abs_tol=0.1):
-        #         return{"position": "slightly left"}
-        #     if math.isclose(right_norm, 1.0, abs_tol=0.1):
-        #         return{"position": "slightly right"}
-        #     if(left_norm > self.sensitivity*1.0):
-        #         return{"position": "very left"}
-        #     if(right_norm > self.sensitivity*1.0):
-        #         return{"position": "very right"}
-        #     if(left_norm < 0.5 and right_norm < 0.5):
-        #         return{"position": "center"}
-        #     return {"position": "none"}
+        if self.polarity == "darker":
+            # logging.debug(f"polarity: darker")
+            if left_grayscale > right_grayscale:
+                return{"position": "left"}
+            elif right_grayscale > left_grayscale:
+                return{"position": "right"}
+            # if math.isclose(left_norm, 1.0, abs_tol=0.1):
+            #     return{"position": "slightly left"}
+            # if math.isclose(right_norm, 1.0, abs_tol=0.1):
+            #     return{"position": "slightly right"}
+            # if(left_norm > self.sensitivity*1.0):
+            #     return{"position": "very left"}
+            # if(right_norm > self.sensitivity*1.0):
+            #     return{"position": "very right"}
+            # if(left_norm < 0.5 and right_norm < 0.5):
+            #     return{"position": "center"}
+            return {"position": "none"}
         
         # elif self.polarity == "lighter":
         #     # logging.debug(f"polarity: lighter")
