@@ -30,8 +30,8 @@ an option to have the “target” darker or lighter than the surrounding floor.
             grayscale_data = [grayscale_datapoint - min(grayscale_data) for grayscale_datapoint in grayscale_data]
         elif self.polarity == -1:
             logging.debug("darker")
-            grayscale_data = -1*[grayscale_datapoint - max(grayscale_data) for grayscale_datapoint in grayscale_data]
-        left_grayscale, center_grayscale, right_grayscale = [abs(value) for value in grayscale_data]
+            grayscale_data = [grayscale_datapoint - max(grayscale_data) for grayscale_datapoint in grayscale_data]
+        left_grayscale, center_grayscale, right_grayscale = grayscale_data
         # logging.debug(f"updated: {left_grayscale}, {center_grayscale}, {right_grayscale}")
         # very left = 1
         # slightly left = 0.5
