@@ -61,4 +61,3 @@ if __name__ == "__main__":
         line_position = px_interpret.line_position(grayscale_values)
         # logging.debug(f"{line_position}")
         px_controller.follow_line(car=px_sensing.px, line_position=line_position)
-        time.sleep(0.1)
