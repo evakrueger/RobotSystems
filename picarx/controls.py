@@ -49,7 +49,7 @@ an option to have the “target” darker or lighter than the surrounding floor.
 
 if __name__ == "__main__":
     px_sensing = Sensing()
-    px_interpret = Interpretation(sensitivity=2.0, polarity="darker")
+    px_interpret = Interpretation(sensitivity=2.0, polarity="lighter")
     while True:
         grayscale_values = px_sensing.get_grayscale()
         # logging.debug(f"{grayscale_values}")
