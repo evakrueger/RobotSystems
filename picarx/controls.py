@@ -32,18 +32,30 @@ an option to have the “target” darker or lighter than the surrounding floor.
         left_grayscale, center_grayscale, right_grayscale = [abs(value) for value in grayscale_data]
         logging.debug(f"updated: {left_grayscale}, {center_grayscale}, {right_grayscale}")
 
-        # if self.polarity == "darker":
+        if self.polarity == "darker":
             # logging.debug(f"polarity: darker")
-        if center_grayscale > left_grayscale and center_grayscale > right_grayscale:
-            return {"position": "center"}
-        if left_grayscale > right_grayscale:
-            if center_grayscale == 0:
-                return{"position": "very left"}
-            return{"position": "slightly left"}
-        elif right_grayscale > left_grayscale:
-            if center_grayscale == 0:
-                return{"position": "very right"}
-            return{"position": "slightly right"}
+            if center_grayscale > left_grayscale and center_grayscale > right_grayscale:
+                return {"position": "center"}
+            if left_grayscale > right_grayscale:
+                if center_grayscale == 0:
+                    return{"position": "very left"}
+                return{"position": "slightly left"}
+            elif right_grayscale > left_grayscale:
+                if center_grayscale == 0:
+                    return{"position": "very right"}
+                return{"position": "slightly right"}
+        if self.polarity == "lighter":
+            # logging.debug(f"polarity: lighter")
+            if center_grayscale > left_grayscale and center_grayscale > right_grayscale:
+                return {"position": "center"}
+            if left_grayscale > right_grayscale:
+                if center_grayscale == 0:
+                    return{"position": "very right"}
+                return{"position": "slightly right"}
+            elif right_grayscale > left_grayscale:
+                if center_grayscale == 0:
+                    return{"position": "very left"}
+                return{"position": "slightly left"}
             
 
 if __name__ == "__main__":
