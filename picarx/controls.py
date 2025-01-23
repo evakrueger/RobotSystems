@@ -26,18 +26,12 @@ whether the system is to the left or right of being centered, and whether it is 
 or only slightly off-center. Make this function robust to different lighting conditions, and with
 an option to have the “target” darker or lighter than the surrounding floor."""
         if self.polarity == 1:
-            logging.debug("lighter")
+            # logging.debug("lighter")
             grayscale_data = [grayscale_datapoint - min(grayscale_data) for grayscale_datapoint in grayscale_data]
         elif self.polarity == -1:
-            logging.debug("darker")
+            # logging.debug("darker")
             grayscale_data = [grayscale_datapoint - max(grayscale_data) for grayscale_datapoint in grayscale_data]
         left_grayscale, center_grayscale, right_grayscale = [abs(value) for value in grayscale_data]
-        # logging.debug(f"updated: {left_grayscale}, {center_grayscale}, {right_grayscale}")
-        # very left = 1
-        # slightly left = 0.5
-        # center = 0
-        # slightly right = -0.5
-        # very right = -1
         if left_grayscale > right_grayscale:
             # logging.debug(f"L > R: {(center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale)}")
             if (center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale) < 0:
@@ -48,13 +42,21 @@ an option to have the “target” darker or lighter than the surrounding floor.
             return self.polarity*((center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
         return self.polarity*(-1 + (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
         
+class Controller():
+    def __init__(self, scaling_factor=3):
+        self.px = Picarx()
+        self.angle_scale = scaling_factor
+        
+    def follow_line(self, line_position):
+        self.px.move_forward_with_steering(speed=10, angle=line_position*self.angle_scale, duration = 0.5)
 
 if __name__ == "__main__":
     px_sensing = Sensing()
     px_interpret = Interpretation(sensitivity=2.0, polarity=1)
+    px_controller = Controller()
     while True:
         grayscale_values = px_sensing.get_grayscale()
         # logging.debug(f"{grayscale_values}")
         line_position = px_interpret.line_position(grayscale_values)
-        logging.debug(f"{line_position}")
-    
+        # logging.debug(f"{line_position}")
+        px_controller.follow_line(line_position)
