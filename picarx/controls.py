@@ -14,7 +14,7 @@ class Sensing():
         return self.px.get_grayscale_data()
 
 class Interpretation():
-    def __init__(self, sensitivity=2.0, polarity="darker"): # sensitivity and polarity should have default values
+    def __init__(self, sensitivity=2.0, polarity=1): # sensitivity and polarity should have default values
         self.sensitivity = sensitivity
         self.polarity = polarity
     
@@ -25,9 +25,9 @@ values (indicative of an edge), and then using the edge location and sign to det
 whether the system is to the left or right of being centered, and whether it is very off-center
 or only slightly off-center. Make this function robust to different lighting conditions, and with
 an option to have the “target” darker or lighter than the surrounding floor."""
-        if self.polarity == "lighter":
+        if self.polarity == -1:
             grayscale_data = [grayscale_datapoint - min(grayscale_data) for grayscale_datapoint in grayscale_data]
-        elif self.polarity == "darker":
+        elif self.polarity == 1:
             grayscale_data = [grayscale_datapoint - max(grayscale_data) for grayscale_datapoint in grayscale_data]
         left_grayscale, center_grayscale, right_grayscale = [abs(value) for value in grayscale_data]
         # logging.debug(f"updated: {left_grayscale}, {center_grayscale}, {right_grayscale}")
@@ -39,12 +39,12 @@ an option to have the “target” darker or lighter than the surrounding floor.
         if left_grayscale > right_grayscale:
             # logging.debug(f"L > R: {(center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale)}")
             if (center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale) < 0:
-                return abs((center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale))
-            return 1 - (center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale)
+                return self.polarity*abs((center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale))
+            return self.polarity*(1 - (center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale))
         # logging.debug(f"R > L: {(center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale)}")
         if (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale) < 0:
-            return ((center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
-        return -1 + (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale)
+            return self.polarity*((center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
+        return self.polarity*(-1 + (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
         
 
 if __name__ == "__main__":
