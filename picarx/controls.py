@@ -48,6 +48,7 @@ class Controller():
         self.angle_scale = scaling_factor
         
     def follow_line(self, line_position):
+        logging.debug(f"driving forward at angle: {line_position*self.angle_scale}")
         self.px.move_forward_with_steering(speed=10, angle=line_position*self.angle_scale, duration = 0.5)
 
 if __name__ == "__main__":
@@ -60,3 +61,4 @@ if __name__ == "__main__":
         line_position = px_interpret.line_position(grayscale_values)
         # logging.debug(f"{line_position}")
         px_controller.follow_line(line_position)
+        time.sleep(1)
