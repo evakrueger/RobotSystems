@@ -30,66 +30,26 @@ an option to have the “target” darker or lighter than the surrounding floor.
         elif self.polarity == "darker":
             grayscale_data = [grayscale_datapoint - max(grayscale_data) for grayscale_datapoint in grayscale_data]
         left_grayscale, center_grayscale, right_grayscale = [abs(value) for value in grayscale_data]
-        logging.debug(f"updated: {left_grayscale}, {center_grayscale}, {right_grayscale}")
-
-# very left = 1
-# slightly left = 0.5
-# center = 0
-# slightly right = -0.5
-# very right = -1
+        # logging.debug(f"updated: {left_grayscale}, {center_grayscale}, {right_grayscale}")
+        # very left = 1
+        # slightly left = 0.5
+        # center = 0
+        # slightly right = -0.5
+        # very right = -1
         if left_grayscale > right_grayscale:
-            logging.debug(f"L > R: {(center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale)}")
+            # logging.debug(f"L > R: {(center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale)}")
             if (center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale) < 0:
                 return abs((center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale))
             return 1 - (center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale)
-        logging.debug(f"R > L: {(center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale)}")
+        # logging.debug(f"R > L: {(center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale)}")
         if (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale) < 0:
             return ((center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
         return -1 + (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale)
         
-        
-        
-        if self.polarity == "darker":
-            logging.debug(f"left-center = {left_grayscale-center_grayscale}, right-center = {right_grayscale-center_grayscale}, left-right = {left_grayscale-right_grayscale}")
-            # logging.debug(f"polarity: darker")
-            if center_grayscale > left_grayscale and center_grayscale > right_grayscale:
-                # "position": "center"
-                return 0
-            if left_grayscale > right_grayscale:
-                if center_grayscale == 0:
-                    # "position": "very left"
-                    return 1
-                # "position": "slightly left"
-                return 0.5
-            elif right_grayscale > left_grayscale:
-                if center_grayscale == 0:
-                    # "position": "very right"
-                    return -1
-                # "position": "slightly right"
-                return -0.5
-        if self.polarity == "lighter":
-            logging.debug(f"left-center = {left_grayscale-center_grayscale}, right-center = {right_grayscale-center_grayscale}, left-right = {left_grayscale-right_grayscale}")
-            # logging.debug(f"polarity: lighter")
-            if center_grayscale > left_grayscale and center_grayscale > right_grayscale:
-                # "position": "center"
-                return 0
-            if left_grayscale > right_grayscale:
-                if center_grayscale == 0:
-                    # "position": "very right"
-                    return -1
-                # "position": "slightly right"
-                return -0.5
-            elif right_grayscale > left_grayscale:
-                if center_grayscale == 0:
-                    # "position": "very left"
-                    return 1
-                # "position": "slightly left"
-                return 0.5
-            
 
 if __name__ == "__main__":
     px_sensing = Sensing()
-    px_interpret = Interpretation(sensitivity=2.0, polarity="lighter")
+    px_interpret = Interpretation(sensitivity=2.0, polarity="darker")
     while True:
         grayscale_values = px_sensing.get_grayscale()
         # logging.debug(f"{grayscale_values}")
