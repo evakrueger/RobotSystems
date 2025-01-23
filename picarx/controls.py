@@ -1,6 +1,7 @@
 from picarx_improved import Picarx
 import logging
 import math
+import time
 logging_format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=logging_format, level=logging.INFO, datefmt="%H:%M:%S")
 logging.getLogger().setLevel(logging.DEBUG)
@@ -44,12 +45,11 @@ an option to have the “target” darker or lighter than the surrounding floor.
         
 class Controller():
     def __init__(self, scaling_factor=3):
-        self.px = Picarx()
         self.angle_scale = scaling_factor
         
-    def follow_line(self, line_position):
+    def follow_line(self, car, line_position):
         logging.debug(f"driving forward at angle: {line_position*self.angle_scale}")
-        self.px.move_forward_with_steering(speed=10, angle=line_position*self.angle_scale, duration = 0.5)
+        car.move_forward_with_steering(speed=10, angle=line_position*self.angle_scale, duration = 0.5)
 
 if __name__ == "__main__":
     px_sensing = Sensing()
@@ -60,5 +60,5 @@ if __name__ == "__main__":
         # logging.debug(f"{grayscale_values}")
         line_position = px_interpret.line_position(grayscale_values)
         # logging.debug(f"{line_position}")
-        px_controller.follow_line(line_position)
+        px_controller.follow_line(car=px_sensing, line_position=line_position)
         time.sleep(1)
