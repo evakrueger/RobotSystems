@@ -50,6 +50,7 @@ class Controller():
     def follow_line(self, car, line_position):
         logging.debug(f"\tdriving forward at angle: {line_position*self.angle_scale}")
         car.move_forward_with_steering(speed=20, angle=line_position*self.angle_scale, duration = 0.1)
+        time.sleep(0.1)
 
 if __name__ == "__main__":
     px_sensing = Sensing()
