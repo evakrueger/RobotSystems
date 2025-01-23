@@ -25,14 +25,15 @@ values (indicative of an edge), and then using the edge location and sign to det
 whether the system is to the left or right of being centered, and whether it is very off-center
 or only slightly off-center. Make this function robust to different lighting conditions, and with
 an option to have the “target” darker or lighter than the surrounding floor."""
-        left_grayscale = grayscale_data[0]
-        center_grayscale = grayscale_data[1]
-        right_grayscale = grayscale_data[2]
-        logging.debug(f"norm: {left_grayscale/center_grayscale}, {center_grayscale/center_grayscale}, {right_grayscale/center_grayscale}")
-        left_norm = left_grayscale/center_grayscale
-        right_norm = right_grayscale/center_grayscale
         if self.polarity == "darker":
-            logging.debug(f"polarity: darker")
+            grayscale_data = [grayscale_datapoint - min(grayscale_data) for grayscale_datapoint in grayscale_data]
+        elif self.polarity == "lighter":
+            grayscale_data = [grayscale_datapoint - max(grayscale_data) for grayscale_datapoint in grayscale_data]
+        left_grayscale, center_grayscale, right_grayscale = grayscale_data
+        logging.debug(f"updated: {left_grayscale}, {center_grayscale}, {right_grayscale}")
+
+        if self.polarity == "darker":
+            # logging.debug(f"polarity: darker")
             if math.isclose(left_norm, 1.0, abs_tol=0.1):
                 return{"position": "slightly left"}
             if math.isclose(right_norm, 1.0, abs_tol=0.1):
@@ -44,8 +45,9 @@ an option to have the “target” darker or lighter than the surrounding floor.
             if(left_norm < 0.5 and right_norm < 0.5):
                 return{"position": "center"}
             return {"position": "none"}
+        
         elif self.polarity == "lighter":
-            logging.debug(f"polarity: lighter")
+            # logging.debug(f"polarity: lighter")
             if math.isclose(left_norm, 1.0, abs_tol=0.1):
                 return{"position": "slightly left"}
             if math.isclose(right_norm, 1.0, abs_tol=0.1):
