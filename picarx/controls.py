@@ -32,30 +32,46 @@ an option to have the “target” darker or lighter than the surrounding floor.
         left_grayscale, center_grayscale, right_grayscale = [abs(value) for value in grayscale_data]
         logging.debug(f"updated: {left_grayscale}, {center_grayscale}, {right_grayscale}")
 
+# very left = 1
+# slightly left = 0.5
+# center = 0
+# slightly right = -0.5
+# very right = -1
+
         if self.polarity == "darker":
             # logging.debug(f"polarity: darker")
             if center_grayscale > left_grayscale and center_grayscale > right_grayscale:
-                return {"position": "center"}
+                # "position": "center"
+                return 0
             if left_grayscale > right_grayscale:
                 if center_grayscale == 0:
-                    return{"position": "very left"}
-                return{"position": "slightly left"}
+                    # "position": "very left"
+                    return 1
+                # "position": "slightly left"
+                return 0.5
             elif right_grayscale > left_grayscale:
                 if center_grayscale == 0:
-                    return{"position": "very right"}
-                return{"position": "slightly right"}
+                    # "position": "very right"
+                    return -1
+                # "position": "slightly right"
+                return -0.5
         if self.polarity == "lighter":
             # logging.debug(f"polarity: lighter")
             if center_grayscale > left_grayscale and center_grayscale > right_grayscale:
-                return {"position": "center"}
+                # "position": "center"
+                return 0
             if left_grayscale > right_grayscale:
                 if center_grayscale == 0:
-                    return{"position": "very right"}
-                return{"position": "slightly right"}
+                    # "position": "very right"
+                    return -1
+                # "position": "slightly right"
+                return -0.5
             elif right_grayscale > left_grayscale:
                 if center_grayscale == 0:
-                    return{"position": "very left"}
-                return{"position": "slightly left"}
+                    # "position": "very left"
+                    return 1
+                # "position": "slightly left"
+                return 0.5
             
 
 if __name__ == "__main__":
