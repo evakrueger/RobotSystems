@@ -31,7 +31,7 @@ an option to have the “target” darker or lighter than the surrounding floor.
         elif self.polarity == -1:
             logging.debug("darker")
             grayscale_data = [grayscale_datapoint - max(grayscale_data) for grayscale_datapoint in grayscale_data]
-        left_grayscale, center_grayscale, right_grayscale = grayscale_data
+        left_grayscale, center_grayscale, right_grayscale = [abs(value) for value in grayscale_data]
         # logging.debug(f"updated: {left_grayscale}, {center_grayscale}, {right_grayscale}")
         # very left = 1
         # slightly left = 0.5
@@ -41,12 +41,12 @@ an option to have the “target” darker or lighter than the surrounding floor.
         if left_grayscale > right_grayscale:
             # logging.debug(f"L > R: {(center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale)}")
             if (center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale) < 0:
-                return (abs((center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale)))
-            return (1 - (center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale))
+                return self.polarity*(abs((center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale)))
+            return self.polarity*(1 - (center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale))
         # logging.debug(f"R > L: {(center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale)}")
         if (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale) < 0:
-            return ((center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
-        return (-1 + (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
+            return self.polarity*((center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
+        return self.polarity*(-1 + (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
         
 
 if __name__ == "__main__":
