@@ -39,7 +39,7 @@ an option to have the “target” darker or lighter than the surrounding floor.
 # very right = -1
 
         if self.polarity == "darker":
-            print(f"left-center = {left_grayscale-center_grayscale}, right-center = {right_grayscale-center_grayscale}, left-right = {left_grayscale-right_grayscale}")
+            logging.debug(f"left-center = {left_grayscale-center_grayscale}, right-center = {right_grayscale-center_grayscale}, left-right = {left_grayscale-right_grayscale}")
             # logging.debug(f"polarity: darker")
             if center_grayscale > left_grayscale and center_grayscale > right_grayscale:
                 # "position": "center"
@@ -57,6 +57,7 @@ an option to have the “target” darker or lighter than the surrounding floor.
                 # "position": "slightly right"
                 return -0.5
         if self.polarity == "lighter":
+            logging.debug(f"left-center = {left_grayscale-center_grayscale}, right-center = {right_grayscale-center_grayscale}, left-right = {left_grayscale-right_grayscale}")
             # logging.debug(f"polarity: lighter")
             if center_grayscale > left_grayscale and center_grayscale > right_grayscale:
                 # "position": "center"
