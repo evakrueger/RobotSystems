@@ -38,10 +38,17 @@ an option to have the “target” darker or lighter than the surrounding floor.
 # slightly right = -0.5
 # very right = -1
         if left_grayscale > right_grayscale:
-            logging.debug(f"silly silly time: {(center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale)}")
+            logging.debug(f"L > R: {(center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale)}")
             if (center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale) < 0:
                 return abs((center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale))
             return 1 - (center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale)
+        logging.debug(f"R > L: {(center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale)}")
+        if (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale) < 0:
+            return abs((center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
+        return 1 - (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale)
+        
+        
+        
         if self.polarity == "darker":
             logging.debug(f"left-center = {left_grayscale-center_grayscale}, right-center = {right_grayscale-center_grayscale}, left-right = {left_grayscale-right_grayscale}")
             # logging.debug(f"polarity: darker")
