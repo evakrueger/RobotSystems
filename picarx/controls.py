@@ -44,8 +44,8 @@ an option to have the “target” darker or lighter than the surrounding floor.
             return 1 - (center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale)
         logging.debug(f"R > L: {(center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale)}")
         if (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale) < 0:
-            return abs((center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
-        return 1 - (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale)
+            return ((center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
+        return -1 + (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale)
         
         
         
