@@ -43,7 +43,7 @@ an option to have the “target” darker or lighter than the surrounding floor.
                 return{"position": "very right"}
             if(left_norm < 0.5 and right_norm < 0.5):
                 return{"position": "center"}
-            return {"position": "center"}
+            return {"position": "none"}
         elif self.polarity == "lighter":
             logging.debug(f"polarity: lighter")
             if math.isclose(left_norm, 1.0, abs_tol=0.1):
@@ -56,7 +56,7 @@ an option to have the “target” darker or lighter than the surrounding floor.
                 return{"position": "very right"}
             if(left_norm < 0.5 and right_norm > 0.5):
                 return{"position": "center"}
-            return {"position": "center"}
+            return {"position": "none"}
             
 
 if __name__ == "__main__":
