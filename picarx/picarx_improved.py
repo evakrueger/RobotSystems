@@ -301,7 +301,7 @@ class Picarx(object):
         """Moves the car forward in straight line or with different steering angles"""
         logging.debug(f"moving forward: speed: {speed}, angle: {angle}, duration: {duration}")
         self.set_dir_servo_angle(angle)
-        time.sleep(0.001)
+        time.sleep(0.01)
         self.forward(speed)
         time.sleep(duration)
     
