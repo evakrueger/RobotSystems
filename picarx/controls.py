@@ -44,7 +44,7 @@ an option to have the “target” darker or lighter than the surrounding floor.
         return self.polarity*(-1 + (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
         
 class Controller():
-    def __init__(self, scaling_factor=10):
+    def __init__(self, scaling_factor=20):
         self.angle_scale = scaling_factor
         
     def follow_line(self, car, line_position):
