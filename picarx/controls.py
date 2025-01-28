@@ -5,7 +5,7 @@ import cv2
 import time
 import io
 import numpy as np
-from picamera import PiCamera
+from vilib import Vilib
 logging_format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=logging_format, level=logging.INFO, datefmt="%H:%M:%S")
 logging.getLogger().setLevel(logging.DEBUG)
