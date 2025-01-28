@@ -1,18 +1,35 @@
 from picarx_improved import Picarx
 import logging
-import math
 import time
+import cv2
+import time
+import io
+import numpy as np
+from picamera import PiCamera
 logging_format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=logging_format, level=logging.INFO, datefmt="%H:%M:%S")
 logging.getLogger().setLevel(logging.DEBUG)
 
 
 class Sensing():
-    def __init__(self):
+    def __init__(self, camera=False):
         self.px = Picarx()
+        if camera:
+            self.camera = PiCamera()
+            self.camera.resolution = (1024, 768)
+            self.camera.start_preview()
+            time.sleep(2)
     
     def get_grayscale(self):
         return self.px.get_grayscale_data()
+
+    def get_camera_image(self):
+        stream = io.BytesIO()
+        self.camera.capture(stream, format='jpeg')
+        stream.seek(0)
+        image = np.array(bytearray(stream.read()), dtype=np.uint8)
+        image = cv2.imdecode(image, cv2.IMREAD_COLOR)        
+        return image
 
 class Interpretation():
     def __init__(self, sensitivity=2.0, polarity=1): # sensitivity and polarity should have default values
@@ -43,6 +60,27 @@ an option to have the “target” darker or lighter than the surrounding floor.
             return self.polarity*((center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
         return self.polarity*(-1 + (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
         
+    def line_position_camera(self, camera_data):
+        """Takes camera data and uses OpenCV to convert to grayscale image, thresholds to find line to follow, sets coordinate to -1 if line on far left of screen, sets to 1 if on far right of screen"""
+        grayscale = cv2.cvtColor(camera_data, cv2.COLOR_BGR2GRAY)
+        # Threshold
+        if self.polarity == 1:
+            _, binary = cv2.threshold(grayscale, 200, 255, cv2.THRESH_BINARY)  # Lighter line
+        else:
+            _, binary = cv2.threshold(grayscale, 50, 255, cv2.THRESH_BINARY_INV)  # Darker line
+
+        contours, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        if not contours:
+            return 0.0
+
+        largest_contour = max(contours, key=cv2.contourArea)
+        x, y, w, h = cv2.boundingRect(largest_contour)
+        line_center = x + w / 2
+        frame_center = camera_data.shape[1] / 2
+        normalized_position = (line_center - frame_center) / frame_center
+
+        return normalized_position
+    
 class Controller():
     def __init__(self, scaling_factor=25):
         self.angle_scale = scaling_factor
@@ -62,9 +100,9 @@ if __name__ == "__main__":
     px_interpret = Interpretation(sensitivity=2.0, polarity=-1)
     px_controller = Controller()
     while True:
-        grayscale_values = px_sensing.get_grayscale()
+        camera_image = px_sensing.get_camera_image()
         # logging.debug(f"{grayscale_values}")
-        line_position = px_interpret.line_position(grayscale_values)
+        line_position = px_interpret.line_position_camera(camera_image)
         logging.debug(f"\tline_position: {line_position}")
         px_controller.follow_line(car=px_sensing.px, line_position=line_position)
         #time.sleep(0.2)
