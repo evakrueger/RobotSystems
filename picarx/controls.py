@@ -49,6 +49,9 @@ class Controller():
         
     def follow_line(self, car, line_position):
         # logging.debug(f"\tdriving forward at angle: {line_position*self.angle_scale}")
+        if line_position < 0.1:
+            car.set_dir_servo_angle(0)
+            car.forward(0)
         car.set_dir_servo_angle(line_position*self.angle_scale)
         car.forward(0)
         # car.move_forward_with_steering(speed=20, angle=line_position*self.angle_scale, duration = 0.05)
