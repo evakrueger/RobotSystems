@@ -52,8 +52,9 @@ class Controller():
         if line_position < 0.1:
             car.set_dir_servo_angle(0)
             car.forward(0)
-        car.set_dir_servo_angle(line_position*self.angle_scale)
-        car.forward(0)
+        else:
+            car.set_dir_servo_angle(line_position*self.angle_scale)
+            car.forward(0)
         # car.move_forward_with_steering(speed=20, angle=line_position*self.angle_scale, duration = 0.05)
 
 if __name__ == "__main__":
