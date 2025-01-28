@@ -44,11 +44,11 @@ an option to have the “target” darker or lighter than the surrounding floor.
         return self.polarity*(-1 + (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
         
 class Controller():
-    def __init__(self, scaling_factor=45):
+    def __init__(self, scaling_factor=15):
         self.angle_scale = scaling_factor
         
     def follow_line(self, car, line_position):
-        logging.debug(f"\tdriving forward at angle: {line_position*self.angle_scale}")
+        # logging.debug(f"\tdriving forward at angle: {line_position*self.angle_scale}")
         car.move_forward_with_steering(speed=0, angle=line_position*self.angle_scale, duration = 0.05)
 
 if __name__ == "__main__":
