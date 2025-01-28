@@ -56,7 +56,7 @@ class Controller():
 
 if __name__ == "__main__":
     px_sensing = Sensing()
-    px_interpret = Interpretation(sensitivity=2.0, polarity=1)
+    px_interpret = Interpretation(sensitivity=2.0, polarity=-1)
     px_controller = Controller()
     while True:
         grayscale_values = px_sensing.get_grayscale()
