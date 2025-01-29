@@ -15,21 +15,18 @@ class Sensing():
     def __init__(self, camera=False):
         self.px = Picarx()
         if camera:
-            self.camera = PiCamera()
-            self.camera.resolution = (1024, 768)
-            self.camera.start_preview()
-            time.sleep(2)
+            Vilib.camera_start(vflip=False,hflip=False)
+            Vilib.display(local=True,web=True)
+            time.sleep(0.5)
+            
     
     def get_grayscale(self):
         return self.px.get_grayscale_data()
 
     def get_camera_image(self):
-        stream = io.BytesIO()
-        self.camera.capture(stream, format='jpeg')
-        stream.seek(0)
-        image = np.array(bytearray(stream.read()), dtype=np.uint8)
-        image = cv2.imdecode(image, cv2.IMREAD_COLOR)        
-        return image
+        # function that gets a camera image
+        frame = Vilib.image_array()
+        return frame
 
 class Interpretation():
     def __init__(self, sensitivity=2.0, polarity=1): # sensitivity and polarity should have default values
