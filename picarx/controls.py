@@ -62,6 +62,7 @@ an option to have the “target” darker or lighter than the surrounding floor.
     def line_position_camera(self, image_path, image_name):
         """Takes camera data and uses OpenCV to convert to grayscale image, thresholds to find line to follow, sets coordinate to -1 if line on far left of screen, sets to 1 if on far right of screen"""
         camera_data = cv2.imread(f'{image_path}/{image_name}.jpg')
+        _, width, _ = camera_data.shape
         grayscale = cv2.cvtColor(camera_data, cv2.COLOR_BGR2GRAY)
         # Threshold
         if self.polarity == 1:
@@ -74,12 +75,10 @@ an option to have the “target” darker or lighter than the surrounding floor.
             return 0.0
 
         largest_contour = max(contours, key=cv2.contourArea)
-        x, y, w, h = cv2.boundingRect(largest_contour)
-        line_center = x + w / 2
-        frame_center = camera_data.shape[1] / 2
-        normalized_position = (line_center - frame_center) / frame_center
-        print(f"NORM POSITION: {normalized_position}")
-        return normalized_position
+        centroid = cv2.moments(largest_contour)
+        if M['m00'] !=0:
+            return (int(centroid['m10']/centroid['moo'])-width)/width
+        return 0
     
 class Controller():
     def __init__(self, scaling_factor=25):
