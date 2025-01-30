@@ -92,7 +92,7 @@ class Controller():
         # car.move_forward_with_steering(speed=20, angle=line_position*self.angle_scale, duration = 0.05)
 
 if __name__ == "__main__":
-    px_sensing = Sensing(camera=True)
+    # px_sensing = Sensing(camera=True)
     # px_interpret = Interpretation(sensitivity=2.0, polarity=-1)
     # px_controller = Controller()
     # while True:
