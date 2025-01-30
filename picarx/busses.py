@@ -19,32 +19,42 @@ class MessageBus:
 
 # Producer: sensor collecting data and writing to the producer bus
 def producer(bus, delay_time):
-    while True:
-        grayscale = px_sensing.px.get_grayscale_data()
-        print(f"[Producer] Collected grayscale data: {grayscale}")
-        bus.write(grayscale)
-        time.sleep(delay_time)
+    try:
+        while True:
+            grayscale = px_sensing.px.get_grayscale_data()
+            print(f"[Producer] Collected grayscale data: {grayscale}")
+            bus.write(grayscale)
+            time.sleep(delay_time)
+    except KeyboardInterrupt:
+        print("[Producer] Exiting gracefully")
 
 
 # Consumer-Producer: Reads sensor data, processes it, writes to the consumer bus
 def consumer_producer(producer_bus, consumer_producer_bus, delay_time):
-    while True:
-        grayscale_data = producer_bus.read()
-        if grayscale_data is not None:
-            line_position = px_interpret.line_position(grayscale_data)
-            print(f"[Consumer Producer] grayscale data line_position: {line_position}")
-            consumer_producer_bus.write(line_position)
-        time.sleep(delay_time)
+    try:
+        while True:
+            grayscale_data = producer_bus.read()
+            if grayscale_data is not None:
+                line_position = px_interpret.line_position(grayscale_data)
+                print(f"[Consumer Producer] grayscale data line_position: {line_position}")
+                consumer_producer_bus.write(line_position)
+            time.sleep(delay_time)
+    except KeyboardInterrupt:
+        print("[Consumer Producer] Exiting gracefully")
 
 
 # Consumer: Reads data and acts on it
 def consumer(consumer_producer_bus, delay_time):
-    while True:
-        line_position = consumer_producer_bus.read()
-        if line_position is not None:
-            print(f"[Consumer] Moving based on line location: {line_position}")
-            px_controller.follow_line(car=px_sensing.px, line_position=line_position)
-        time.sleep(delay_time)
+    try:
+        while True:
+            line_position = consumer_producer_bus.read()
+            if line_position is not None:
+                print(f"[Consumer] Moving based on line location: {line_position}")
+                px_controller.follow_line(car=px_sensing.px, line_position=line_position)
+            time.sleep(delay_time)
+    except KeyboardInterrupt:
+        print("[Consumer] Exiting gracefully")
+        px_controller.stop_motors()
 
 
 if __name__ == "__main__":
@@ -73,10 +83,3 @@ if __name__ == "__main__":
     eSensor.result()
     eInterpreter.result()
     eController.result()
-
-# #######
-#     while True:
-        
-#         line_position = px_interpret.line_position_camera(px_sensing.path, px_sensing.name)
-#         logging.debug(f"\tline_position: {line_position}")
-#         px_controller.follow_line(car=px_sensing.px, line_position=line_position)

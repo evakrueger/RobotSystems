@@ -97,6 +97,9 @@ class Controller():
             car.set_dir_servo_angle(line_position*self.angle_scale)
             car.forward(20)
         # car.move_forward_with_steering(speed=20, angle=line_position*self.angle_scale, duration = 0.05)
+    
+    def stop_motors(self, car):
+        car.stop()
 
 if __name__ == "__main__":
     px_sensing = Sensing(camera=True)
