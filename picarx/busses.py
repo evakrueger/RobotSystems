@@ -58,9 +58,9 @@ if __name__ == "__main__":
     interpretation_bus = MessageBus()
 
     # Define delays
-    sensor_delay = 1  # 1 second
-    interpreter_delay = 1  # 1 second
-    controller_delay = 1  # 1 second
+    sensor_delay = 0.1  # 1 second
+    interpreter_delay = 0.1  # 1 second
+    controller_delay = 0.1  # 1 second
 
     # Run components concurrently
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
