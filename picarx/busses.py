@@ -20,19 +20,19 @@ class MessageBus:
 # Producer: sensor collecting data and writing to the producer bus
 def producer(bus, delay_time):
     while True:
-        camera_image = px_sensing.get_camera_image()
-        print(f"[Producer] Collected camera image: {camera_image}")
-        bus.write(camera_image)
+        grayscale = px_sensing.px.get_grayscale_data()
+        print(f"[Producer] Collected grayscale data: {grayscale}")
+        bus.write(grayscale)
         time.sleep(delay_time)
 
 
 # Consumer-Producer: Reads sensor data, processes it, writes to the consumer bus
 def consumer_producer(producer_bus, consumer_producer_bus, delay_time):
     while True:
-        camera_data = producer_bus.read()
-        if camera_data is not None:
-            line_position = px_interpret.line_position_camera(camera_data)
-            print(f"[Consumer Producer] line_position: {line_position}")
+        grayscale_data = producer_bus.read()
+        if grayscale_data is not None:
+            line_position = px_interpret.line_position(grayscale_data)
+            print(f"[Consumer Producer] grayscale data line_position: {line_position}")
             consumer_producer_bus.write(line_position)
         time.sleep(delay_time)
 

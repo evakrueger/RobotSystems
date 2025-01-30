@@ -15,7 +15,7 @@ class Sensing():
     def __init__(self, camera=False):
         self.px = Picarx()
         if camera:
-            self.px.set_cam_tilt_angle(-10)
+            self.px.set_cam_tilt_angle(-20)
             time.sleep(0.1)
             Vilib.camera_start(vflip=False,hflip=False)
             Vilib.display(local=True,web=True)
@@ -29,7 +29,6 @@ class Sensing():
     def get_camera_image(self):
         # function that gets a camera image
         Vilib.take_photo(self.name, self.path)
-        return f'{self.path}/{self.name}.jpg'
 
 class Interpretation():
     def __init__(self, sensitivity=2.0, polarity=1): # sensitivity and polarity should have default values
@@ -60,9 +59,9 @@ an option to have the “target” darker or lighter than the surrounding floor.
             return self.polarity*((center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
         return self.polarity*(-1 + (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
         
-    def line_position_camera(self, image_path):
+    def line_position_camera(self, image_path, image_name):
         """Takes camera data and uses OpenCV to convert to grayscale image, thresholds to find line to follow, sets coordinate to -1 if line on far left of screen, sets to 1 if on far right of screen"""
-        camera_data = cv2.imread(f"{image_path}")
+        camera_data = cv2.imread(f'{image_path}/{image_name}.jpg')
         grayscale = cv2.cvtColor(camera_data, cv2.COLOR_BGR2GRAY)
         # Threshold
         if self.polarity == 1:
@@ -103,7 +102,7 @@ if __name__ == "__main__":
     while True:
         camera_image = px_sensing.get_camera_image()
         # logging.debug(f"{grayscale_values}")
-        line_position = px_interpret.line_position_camera(camera_image)
+        line_position = px_interpret.line_position_camera(px_sensing.path, px_sensing.name)
         logging.debug(f"\tline_position: {line_position}")
         px_controller.follow_line(car=px_sensing.px, line_position=line_position)
         #time.sleep(0.2)
