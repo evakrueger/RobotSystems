@@ -78,7 +78,7 @@ an option to have the “target” darker or lighter than the surrounding floor.
         line_center = x + w / 2
         frame_center = camera_data.shape[1] / 2
         normalized_position = (line_center - frame_center) / frame_center
-
+        print(f"NORM POSITION: {normalized_position}")
         return normalized_position
     
 class Controller():
