@@ -6,6 +6,8 @@ import time
 import io
 import numpy as np
 from vilib import Vilib
+from robot_hat import Pin
+print(Pin.PINS)  # Check available pins
 logging_format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=logging_format, level=logging.INFO, datefmt="%H:%M:%S")
 logging.getLogger().setLevel(logging.DEBUG)
