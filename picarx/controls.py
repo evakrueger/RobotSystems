@@ -18,7 +18,6 @@ class Sensing():
             Vilib.camera_start(vflip=False,hflip=False)
             Vilib.display(local=True,web=True)
             time.sleep(0.5)
-            
     
     def get_grayscale(self):
         return self.px.get_grayscale_data()
@@ -93,7 +92,7 @@ class Controller():
         # car.move_forward_with_steering(speed=20, angle=line_position*self.angle_scale, duration = 0.05)
 
 if __name__ == "__main__":
-    px_sensing = Sensing()
+    px_sensing = Sensing(camera=True)
     px_interpret = Interpretation(sensitivity=2.0, polarity=-1)
     px_controller = Controller()
     while True:
