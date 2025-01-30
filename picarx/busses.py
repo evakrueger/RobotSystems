@@ -1,20 +1,20 @@
 import time
 import concurrent.futures
-# from readerwriterlock import rwlock
+from readerwriterlock import rwlock
 from controls import Sensing, Interpretation, Controller
 
 class MessageBus:
     def __init__(self):
         self.message = None
-        # self.lock = rwlock.RWLockWriteD()
+        self.lock = rwlock.RWLockWriteD()
     
     def write(self, message_content):
-        # with self.lock.gen_wlock():
-        self.message = message_content
+        with self.lock.gen_wlock():
+            self.message = message_content
     
     def read(self):
-        # with self.lock.gen_rlock():
-        message = self.message
+        with self.lock.gen_rlock():
+            message = self.message
         return message
 
 # Producer: sensor collecting data and writing to the producer bus
