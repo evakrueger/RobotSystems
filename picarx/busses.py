@@ -22,7 +22,7 @@ def producer(bus, delay_time):
     while True:
         camera_image = px_sensing.get_camera_image()
         print(f"[Producer] Collected camera image: {camera_image}")
-        bus.write(1)
+        bus.write(camera_image)
         time.sleep(delay_time)
 
 
@@ -31,7 +31,7 @@ def consumer_producer(producer_bus, consumer_producer_bus, delay_time):
     while True:
         camera_data = producer_bus.read()
         if camera_data is not None:
-            line_position = px_interpret.line_position_camera(px_sensing.path, px_sensing.name)
+            line_position = px_interpret.line_position_camera(camera_data)
             print(f"[Consumer Producer] line_position: {line_position}")
             consumer_producer_bus.write(line_position)
         time.sleep(delay_time)

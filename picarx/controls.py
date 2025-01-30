@@ -29,6 +29,7 @@ class Sensing():
     def get_camera_image(self):
         # function that gets a camera image
         Vilib.take_photo(self.name, self.path)
+        return '{self.path}/{self.name}.jpg'
 
 class Interpretation():
     def __init__(self, sensitivity=2.0, polarity=1): # sensitivity and polarity should have default values
@@ -59,9 +60,9 @@ an option to have the “target” darker or lighter than the surrounding floor.
             return self.polarity*((center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
         return self.polarity*(-1 + (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
         
-    def line_position_camera(self, image_path, image_name):
+    def line_position_camera(self, image_path):
         """Takes camera data and uses OpenCV to convert to grayscale image, thresholds to find line to follow, sets coordinate to -1 if line on far left of screen, sets to 1 if on far right of screen"""
-        camera_data = cv2.imread(f'{image_path}/{image_name}.jpg')
+        camera_data = cv2.imread({image_path})
         grayscale = cv2.cvtColor(camera_data, cv2.COLOR_BGR2GRAY)
         # Threshold
         if self.polarity == 1:
