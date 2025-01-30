@@ -30,7 +30,6 @@ def producer(bus, delay_time):
 def consumer_producer(producer_bus, consumer_producer_bus, delay_time):
     while True:
         camera_data = producer_bus.read()
-        print(f"IDK WHAT IS GOING ON camera_data: {camera_data}")
         if camera_data is not None:
             line_position = px_interpret.line_position_camera(camera_data)
             print(f"[Consumer Producer] line_position: {line_position}")
