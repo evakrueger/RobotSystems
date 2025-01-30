@@ -15,7 +15,7 @@ class Sensing():
     def __init__(self, camera=False):
         self.px = Picarx()
         if camera:
-            self.px.set_cam_tilt_angle(-20)
+            self.px.set_cam_tilt_angle(-10)
             time.sleep(0.1)
             Vilib.camera_start(vflip=False,hflip=False)
             Vilib.display(local=True,web=True)
@@ -62,9 +62,7 @@ an option to have the “target” darker or lighter than the surrounding floor.
         
     def line_position_camera(self, image_path):
         """Takes camera data and uses OpenCV to convert to grayscale image, thresholds to find line to follow, sets coordinate to -1 if line on far left of screen, sets to 1 if on far right of screen"""
-        print(f"attempting to read {image_path}")
         camera_data = cv2.imread(f"{image_path}")
-        print(f"attempting to grayscale {image_path}")
         grayscale = cv2.cvtColor(camera_data, cv2.COLOR_BGR2GRAY)
         # Threshold
         if self.polarity == 1:
