@@ -14,10 +14,10 @@ logging.getLogger().setLevel(logging.DEBUG)
 class Sensing():
     def __init__(self, camera=False):
         self.px = Picarx()
-        if camera:
-            Vilib.camera_start(vflip=False,hflip=False)
-            Vilib.display(local=True,web=True)
-            time.sleep(0.5)
+        # if camera:
+        #     Vilib.camera_start(vflip=False,hflip=False)
+        #     Vilib.display(local=True,web=True)
+        #     time.sleep(0.5)
     
     def get_grayscale(self):
         return self.px.get_grayscale_data()
@@ -93,12 +93,12 @@ class Controller():
 
 if __name__ == "__main__":
     px_sensing = Sensing(camera=True)
-    px_interpret = Interpretation(sensitivity=2.0, polarity=-1)
-    px_controller = Controller()
-    while True:
-        camera_image = px_sensing.get_camera_image()
-        # logging.debug(f"{grayscale_values}")
-        line_position = px_interpret.line_position_camera(camera_image)
-        logging.debug(f"\tline_position: {line_position}")
-        px_controller.follow_line(car=px_sensing.px, line_position=line_position)
-        #time.sleep(0.2)
+    # px_interpret = Interpretation(sensitivity=2.0, polarity=-1)
+    # px_controller = Controller()
+    # while True:
+    #     camera_image = px_sensing.get_camera_image()
+    #     # logging.debug(f"{grayscale_values}")
+    #     line_position = px_interpret.line_position_camera(camera_image)
+    #     logging.debug(f"\tline_position: {line_position}")
+    #     px_controller.follow_line(car=px_sensing.px, line_position=line_position)
+    #     #time.sleep(0.2)
