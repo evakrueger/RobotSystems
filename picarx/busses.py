@@ -22,7 +22,7 @@ def producer(bus, delay_time):
     while True:
         camera_image = px_sensing.get_camera_image()
         print(f"[Producer] Collected camera image: {camera_image}")
-        bus.write(camera_image)
+        bus.write(1)
         time.sleep(delay_time)
 
 
