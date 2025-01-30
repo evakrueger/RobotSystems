@@ -78,7 +78,9 @@ an option to have the “target” darker or lighter than the surrounding floor.
         largest_contour = max(contours, key=cv2.contourArea)
         centroid = cv2.moments(largest_contour)
         if centroid['m00'] !=0:
-            return (int(centroid['m10']/centroid['m00'])-width)/width
+            centroid_x = int(centroid['m10'] / centroid['m00'])
+            normalized_position = (centroid_x - width / 2) / (width / 2)
+            return normalized_position
         print("WAAAAH")
         return 0.0
     
