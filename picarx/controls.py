@@ -15,6 +15,8 @@ class Sensing():
     def __init__(self, camera=False):
         self.px = Picarx()
         if camera:
+            self.px.set_cam_tilt_angle(-10)
+            time.sleep(0.1)
             Vilib.camera_start(vflip=False,hflip=False)
             Vilib.display(local=True,web=True)
             self.name = 'img'
