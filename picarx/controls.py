@@ -18,7 +18,7 @@ class Sensing():
             Vilib.camera_start(vflip=False,hflip=False)
             Vilib.display(local=True,web=True)
             self.name = 'img'
-            self.path = f""
+            self.path = f"picarx"
             time.sleep(0.5)
     
     def get_grayscale(self):
