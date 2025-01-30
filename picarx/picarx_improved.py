@@ -18,7 +18,7 @@ except ImportError:
 import logging
 import atexit
 
-reset_mcu()
+# reset_mcu()
 time.sleep(0.2)
 
 def constrain(x, min_val, max_val):

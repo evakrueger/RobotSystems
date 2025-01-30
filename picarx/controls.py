@@ -5,6 +5,7 @@ import cv2
 import time
 import io
 import numpy as np
+from vilib import Vilib
 logging_format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=logging_format, level=logging.INFO, datefmt="%H:%M:%S")
 logging.getLogger().setLevel(logging.DEBUG)
@@ -12,7 +13,6 @@ logging.getLogger().setLevel(logging.DEBUG)
 
 class Sensing():
     def __init__(self, camera=False):
-        from vilib import Vilib
         self.px = Picarx()
         if camera:
             Vilib.camera_start(vflip=False,hflip=False)
