@@ -105,7 +105,7 @@ if __name__ == "__main__":
     while True:
         camera_image = px_sensing.get_camera_image()
         # logging.debug(f"{grayscale_values}")
-        line_position = px_interpret.line_position_camera(px_sensing.path, px_sensing.name)
+        line_position = px_interpret.line_position_camera(camera_image)
         logging.debug(f"\tline_position: {line_position}")
         px_controller.follow_line(car=px_sensing.px, line_position=line_position)
         #time.sleep(0.2)
