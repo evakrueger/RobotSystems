@@ -78,7 +78,7 @@ try:
     runConcurrently([sensor_producer, line_interpreter, vehicle_controller, timer])
 except KeyboardInterrupt:
     logging.info("[Main] Exiting gracefully")
-    px_controller.stop()
+    px_controller.stop(car=px_sensing.px)
 finally:
     logging.info("[Main] Shutting down")
-    px_controller.stop()
+    px_controller.stop(car=px_sensing.px)
