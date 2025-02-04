@@ -7,7 +7,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 
 # my control classes
 px_sensing = Sensing(camera=True)
-px_sensing_ultrasonic = SensingUltrasonic(camera=True)
+px_sensing_ultrasonic = SensingUltrasonic(car=px_sensing.px)
 px_interpret = Interpretation(sensitivity=2.0, polarity=-1)
 px_controller = Controller()
 
@@ -29,7 +29,7 @@ def get_grayscale_data():
     return grayscale
 
 def get_ultrasonic_data():
-    ultrasonic_distance = px_sensing_ultrasonic.read_distance(car=px_sensing.px)
+    ultrasonic_distance = px_sensing_ultrasonic.read_distance()
     logging.info(f"ULTRASONIC DISTANCE: {ultrasonic_distance}")
     return ultrasonic_distance
 
