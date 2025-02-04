@@ -98,8 +98,9 @@ class Controller():
             car.forward(20)
         # car.move_forward_with_steering(speed=20, angle=line_position*self.angle_scale, duration = 0.05)
     
-    def stop_motors(self, car):
+    def stop(self, car):
         car.stop()
+    
 
 if __name__ == "__main__":
     px_sensing = Sensing(camera=True)
