@@ -29,6 +29,10 @@ class Sensing():
     def get_camera_image(self):
         # function that gets a camera image
         Vilib.take_photo(self.name, self.path)
+    
+    def shutdown_camera(self):
+        Vilib.camera_close()
+        print("CLOSING CAMERA")
 
 class Interpretation():
     def __init__(self, sensitivity=2.0, polarity=1): # sensitivity and polarity should have default values

@@ -83,9 +83,8 @@ try:
 except KeyboardInterrupt:
     logging.info("[Main] Exiting gracefully")
     px_controller.stop(car=px_sensing.px)
-    sensor_bus.close()
-    interpretation_bus.close()
-    termination_bus.close()
+    px_sensing.px.shutdown_camera()
 finally:
     logging.info("[Main] Shutting down")
     px_controller.stop(car=px_sensing.px)
+    px_sensing.px.shutdown_camera()
