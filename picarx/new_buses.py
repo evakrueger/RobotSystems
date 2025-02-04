@@ -49,7 +49,7 @@ def interpret_line_position(grayscale_data):
 def interpret_check_obstacles(ultrasonic_data):
     try:
         obstacle_present = px_interpret_ultrasonic.check_obstacle(ultrasonic_data)
-        logging.info(f"OBSTACLE PRESENT?: {obstacle_present}")
+        logging.info(f"OBSTACLE PRESENT?: {obstacle_present} (distance: {ultrasonic_data})")
         return obstacle_present
     except Exception as e:
         logging.info(f"ERROR with obstacle detection, assume True")
