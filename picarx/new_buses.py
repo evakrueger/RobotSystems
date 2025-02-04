@@ -47,14 +47,13 @@ def interpret_line_position(grayscale_data):
         return 0
 
 def interpret_check_obstacles(ultrasonic_data):
-    pass
-    # try:
-    #     obstacle_present = px_interpret_ultrasonic.check_obstacle(ultrasonic_data)
-    #     logging.info(f"OBSTACLE PRESENT?: {obstacle_present}")
-    #     return obstacle_present
-    # except Exception as e:
-    #     logging.info(f"ERROR with obstacle detection, assume True")
-    #     return True
+    try:
+        obstacle_present = px_interpret_ultrasonic.check_obstacle(ultrasonic_data)
+        logging.info(f"OBSTACLE PRESENT?: {obstacle_present}")
+        return obstacle_present
+    except Exception as e:
+        logging.info(f"ERROR with obstacle detection, assume True")
+        return True
 
 # Move vehicle based on line position
 def control_vehicle(line_position):
@@ -62,9 +61,10 @@ def control_vehicle(line_position):
     px_controller.follow_line(car=px_sensing.px, line_position=line_position)
 
 def control_vehicle_obstacle(obstacle_present):
-    if obstacle_present:
-        logging.info(f"THERES AN OBSTACLE")
-        px_controller.stop_motors(car=px_sensing.px)
+    pass
+    # if obstacle_present:
+    #     logging.info(f"THERES AN OBSTACLE")
+    #     px_controller.stop_motors(car=px_sensing.px)
 
 # runtime using Timer class
 timer = Timer(
