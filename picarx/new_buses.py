@@ -47,13 +47,14 @@ def interpret_line_position(grayscale_data):
         return 0
 
 def interpret_check_obstacles(ultrasonic_data):
-    try:
-        obstacle_present = px_interpret_ultrasonic.check_obstacle(ultrasonic_data)
-        logging.info(f"OBSTACLE PRESENT?: {obstacle_present}")
-        return obstacle_present
-    except Exception as e:
-        logging.info(f"ERROR with obstacle detection, assume True")
-        return True
+    pass
+    # try:
+    #     obstacle_present = px_interpret_ultrasonic.check_obstacle(ultrasonic_data)
+    #     logging.info(f"OBSTACLE PRESENT?: {obstacle_present}")
+    #     return obstacle_present
+    # except Exception as e:
+    #     logging.info(f"ERROR with obstacle detection, assume True")
+    #     return True
 
 # Move vehicle based on line position
 def control_vehicle(line_position):
@@ -127,7 +128,7 @@ vehicle_controller_ultrasonic = Consumer(
 
 # Run all components concurrently
 try:
-    runConcurrently([sensor_producer, sensor_producer_ultrasonic, line_interpreter, obstacle_detector, vehicle_controller, timer])
+    runConcurrently([sensor_producer, sensor_producer_ultrasonic, line_interpreter, obstacle_detector, vehicle_controller, vehicle_controller_ultrasonic, timer])
 except KeyboardInterrupt:
     logging.info("[Main] Exiting gracefully")
     px_controller.stop(car=px_sensing.px)
