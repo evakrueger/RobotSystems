@@ -104,7 +104,7 @@ class InterpretationUltrasonic():
         self.distance_threshold = distance_threshold
     
     def check_obstacle(self, ultrasonic_data):
-        if ultrasonic_data <= self.distance_threshold:
+        if ultrasonic_data <= self.distance_threshold and ultrasonic_data >= 0:
             # logging.debug("OBSTACLE OBSTACLE OBSTACLE")
             return True
         else:
