@@ -50,10 +50,10 @@ def interpret_check_obstacles(ultrasonic_data):
     try:
         obstacle_present = px_interpret_ultrasonic.check_obstacle(ultrasonic_data)
         logging.info(f"OBSTACLE PRESENT?: {obstacle_present}")
-        return not obstacle_present
+        return obstacle_present
     except Exception as e:
         logging.info(f"ERROR with obstacle detection, assume True")
-        return False
+        return True
 
 # Move vehicle based on line position
 def control_vehicle(line_position):
