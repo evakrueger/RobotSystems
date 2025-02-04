@@ -128,7 +128,7 @@ vehicle_controller = Consumer(
 
 # Run all components concurrently
 try:
-    runConcurrently([sensor_producer, sensor_producer_ultrasonic, line_interpreter, obstacle_detector, vehicle_controller, vehicle_controller_ultrasonic, timer])
+    runConcurrently([sensor_producer, sensor_producer_ultrasonic, line_interpreter, obstacle_detector, vehicle_controller, timer])
 except KeyboardInterrupt:
     logging.info("[Main] Exiting gracefully")
     px_controller.stop(car=px_sensing.px)
