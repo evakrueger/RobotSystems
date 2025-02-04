@@ -50,10 +50,10 @@ def interpret_check_obstacles(ultrasonic_data):
     try:
         obstacle_present = px_interpret_ultrasonic.check_obstacle(ultrasonic_data)
         logging.info(f"OBSTACLE PRESENT?: {obstacle_present}")
-        return obstacle_present
+        return not obstacle_present
     except Exception as e:
         logging.info(f"ERROR with obstacle detection, assume True")
-        return True
+        return False
 
 # Move vehicle based on line position
 def control_vehicle(line_position):
@@ -104,7 +104,7 @@ line_interpreter = ConsumerProducer(
 obstacle_detector = ConsumerProducer(
     consumer_producer_function= interpret_check_obstacles,
     input_buses=sensor_bus_ultrasonic,
-    output_buses=interpretation_bus_obstacles,
+    output_buses=termination_bus,
     delay=interpreter_delay,
     termination_buses=termination_bus,
     name="Line Interpreter"
@@ -118,13 +118,13 @@ vehicle_controller = Consumer(
     name="Vehicle Controller"
 )
 
-vehicle_controller_ultrasonic = Consumer(
-    consumer_function=control_vehicle_obstacle,
-    input_buses=interpretation_bus_obstacles,
-    delay=controller_delay,
-    termination_buses=termination_bus,
-    name="Vehicle Controller"
-)
+# vehicle_controller_ultrasonic = Consumer(
+#     consumer_function=control_vehicle_obstacle,
+#     input_buses=interpretation_bus_obstacles,
+#     delay=controller_delay,
+#     termination_buses=termination_bus,
+#     name="Vehicle Controller"
+# )
 
 # Run all components concurrently
 try:
