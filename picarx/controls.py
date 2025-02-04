@@ -72,7 +72,7 @@ an option to have the “target” darker or lighter than the surrounding floor.
 
         contours, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         if not contours:
-            print("NO CONTOURS.")
+            # print("NO CONTOURS.")
             return 0.0
 
         largest_contour = max(contours, key=cv2.contourArea)
@@ -81,7 +81,7 @@ an option to have the “target” darker or lighter than the surrounding floor.
             centroid_x = int(centroid['m10'] / centroid['m00'])
             normalized_position = (centroid_x - width / 2) / (width / 2)
             return normalized_position
-        print("WAAAAH")
+        # print("WAAAAH")
         return 0.0
     
 class Controller():
