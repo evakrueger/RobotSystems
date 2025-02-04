@@ -32,7 +32,6 @@ class Sensing():
     
     def shutdown_camera(self):
         Vilib.camera_close()
-        print("CLOSING CAMERA")
 
 class Interpretation():
     def __init__(self, sensitivity=2.0, polarity=1): # sensitivity and polarity should have default values
@@ -76,7 +75,6 @@ an option to have the “target” darker or lighter than the surrounding floor.
 
         contours, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         if not contours:
-            # print("NO CONTOURS.")
             return 0.0
 
         largest_contour = max(contours, key=cv2.contourArea)
@@ -85,9 +83,46 @@ an option to have the “target” darker or lighter than the surrounding floor.
             centroid_x = int(centroid['m10'] / centroid['m00'])
             normalized_position = (centroid_x - width / 2) / (width / 2)
             return normalized_position
-        # print("WAAAAH")
         return 0.0
     
+# Create sensor and interpreter classes for the ultrasonic sensors, along with a controller that
+# moves the car forward if the way forward is clear, and stops it if there is an obstacle imme-
+# diately in front of it
+
+class SensingUltrasonic():
+    def __init__(self, car):
+        self.px = car
+        distance_threshold = 40 # value taken from avoiding_obstacles.py example code
+        
+    def read_distance(self):
+        distance = round(self.px.ultrasonic.read(), 2)
+        print("ULTRASONIC DISTANCE: ",distance)
+        return distance
+
+
+class InterpretationUltrasonic():
+    def __init__(self, sensitivity=2.0, polarity=1): # sensitivity and polarity should have default values
+        self.sensitivity = sensitivity
+        self.polarity = polarity # polarity -1 = darker line, 1 = lighter line
+    
+    def line_position(self, grayscale_data):
+        if self.polarity == 1:
+            # logging.debug("lighter")
+            grayscale_data = [grayscale_datapoint - min(grayscale_data) for grayscale_datapoint in grayscale_data]
+        elif self.polarity == -1:
+            # logging.debug("darker")
+            grayscale_data = [grayscale_datapoint - max(grayscale_data) for grayscale_datapoint in grayscale_data]
+        left_grayscale, center_grayscale, right_grayscale = [abs(value) for value in grayscale_data]
+        if left_grayscale > right_grayscale:
+            # logging.debug(f"L > R: {(center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale)}")
+            if (center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale) < 0:
+                return self.polarity*(abs((center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale)))
+            return self.polarity*(1 - (center_grayscale-left_grayscale)/max(left_grayscale, center_grayscale))
+        # logging.debug(f"R > L: {(center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale)}")
+        if (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale) < 0:
+            return self.polarity*((center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
+        return self.polarity*(-1 + (center_grayscale-right_grayscale)/max(right_grayscale, center_grayscale))
+
 class Controller():
     def __init__(self, scaling_factor=25):
         self.angle_scale = scaling_factor

@@ -274,10 +274,8 @@ class Timer(Producer):
         # since instantiation is longer than the duration
         if self.duration:
             time_relative_to_end_time = time.time() - self.t_start - self.duration
-            print(f"TIMER: {time_relative_to_end_time}")
             return time_relative_to_end_time
         else:
-            print(f"TIMER FALSE: {time_relative_to_end_time}")
             return False
 
 
