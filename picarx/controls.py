@@ -127,7 +127,6 @@ class Controller():
     
     def stop_motors(self, car):
         car.stop()
-        time.sleep(1)
     
     def stop(self, car):
         car.stop()

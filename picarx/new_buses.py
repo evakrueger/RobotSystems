@@ -64,6 +64,7 @@ def control_vehicle_obstacle(obstacle_present):
     if obstacle_present:
         logging.info(f"THERES AN OBSTACLE")
         px_controller.stop_motors(car=px_sensing.px)
+        time.sleep(5)
 
 # runtime using Timer class
 timer = Timer(
