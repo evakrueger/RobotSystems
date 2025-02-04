@@ -22,20 +22,24 @@ controller_delay = 0.1
 run_time = 5
 
 # Get grayscale data
-def produce_sensor_data():
+def get_grayscale_data():
     grayscale = px_sensing.px.get_grayscale_data()
-    logging.info(f"[Producer] Collected grayscale data: {grayscale}")
+    logging.info(f"GRAYSCALE: {grayscale}")
     return grayscale
 
 # Interpret grayscale data
 def interpret_line_position(grayscale_data):
-    line_position = px_interpret.line_position(grayscale_data)
-    logging.info(f"[Consumer-Producer] Line position: {line_position}")
-    return line_position
+    try:
+        line_position = px_interpret.line_position(grayscale_data)
+        logging.info(f"LINE POSITION: {line_position}")
+        return line_position
+    except Exception as e:
+        logging.info(f"ERROR with line position")
+        return 0
 
 # Move vehicle based on line position
 def control_vehicle(line_position):
-    logging.info(f"[Consumer] Moving based on line position: {line_position}")
+    logging.info(f"CONTROL VEHICLE Moving based on line position: {line_position}")
     px_controller.follow_line(car=px_sensing.px, line_position=line_position)
 
 # runtime using Timer class
@@ -49,7 +53,7 @@ timer = Timer(
 
 # Use RossROS.py classes
 sensor_producer = Producer(
-    producer_function=produce_sensor_data,
+    producer_function=get_grayscale_data,
     output_buses=sensor_bus,
     delay=sensor_delay,
     termination_buses=termination_bus,
