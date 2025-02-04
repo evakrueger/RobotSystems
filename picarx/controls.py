@@ -126,7 +126,8 @@ class Controller():
         # car.move_forward_with_steering(speed=20, angle=line_position*self.angle_scale, duration = 0.05)
     
     def stop_motors(self, car):
-        car.forward(0)
+        car.stop()
+        time.sleep(1)
     
     def stop(self, car):
         car.stop()
