@@ -28,7 +28,7 @@ run_time = 5
 # Get grayscale data
 def get_grayscale_data():
     grayscale = px_sensing.px.get_grayscale_data()
-    logging.info(f"GRAYSCALE: {grayscale}")
+    logging.info(f"Grayscale: {grayscale}")
     return grayscale
 
 def get_ultrasonic_data():
@@ -40,7 +40,7 @@ def get_ultrasonic_data():
 def interpret_line_position(grayscale_data):
     try:
         line_position = px_interpret.line_position(grayscale_data)
-        logging.info(f"LINE POSITION: {line_position}")
+        logging.info(f"Line position: {line_position}")
         return line_position
     except Exception as e:
         logging.info(f"ERROR with line position")
@@ -61,10 +61,9 @@ def control_vehicle(line_position):
     px_controller.follow_line(car=px_sensing.px, line_position=line_position)
 
 def control_vehicle_obstacle(obstacle_present):
-    pass
-    # if obstacle_present:
-    #     logging.info(f"THERES AN OBSTACLE")
-    #     px_controller.stop_motors(car=px_sensing.px)
+    if obstacle_present:
+        logging.info(f"THERES AN OBSTACLE")
+        px_controller.stop_motors(car=px_sensing.px)
 
 # runtime using Timer class
 timer = Timer(
