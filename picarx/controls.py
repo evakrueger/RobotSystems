@@ -95,7 +95,7 @@ class SensingUltrasonic():
         
     def read_distance(self):
         distance = round(self.px.ultrasonic.read(), 2)
-        print("ULTRASONIC DISTANCE: ",distance)
+        # print("ULTRASONIC DISTANCE: ",distance)
         return distance
 
 
@@ -105,10 +105,10 @@ class InterpretationUltrasonic():
     
     def check_obstacle(self, ultrasonic_data):
         if ultrasonic_data <= self.distance_threshold:
-            logging.debug("OBSTACLE OBSTACLE OBSTACLE")
+            # logging.debug("OBSTACLE OBSTACLE OBSTACLE")
             return True
         else:
-            logging.debug("NO OBSTACLES")
+            # logging.debug("NO OBSTACLES")
             return False
 
 class Controller():
