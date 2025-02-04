@@ -89,6 +89,3 @@ except KeyboardInterrupt:
 finally:
     logging.info("[Main] Shutting down")
     px_controller.stop(car=px_sensing.px)
-    sensor_bus.close()
-    interpretation_bus.close()
-    termination_bus.close()
