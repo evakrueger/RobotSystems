@@ -1,4 +1,6 @@
-from picarx import Picarx
+import sys
+sys.path.append("/Users/evakrueger/git/RobotSystems/picarx")
+from picarx_improved import Picarx
 import time
 
 
