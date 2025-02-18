@@ -21,7 +21,7 @@ AK = ArmIK()
 range_rgb = {
     'red': (0, 0, 255),
     'blue': (255, 0, 0),
-    'green': (0, 200, 0),
+    'green': (0, 255, 0),
     'black': (0, 0, 0),
     'white': (255, 255, 255),
 }
@@ -327,6 +327,7 @@ def run(img):
     area_max = 0
     areaMaxContour = 0
     if not start_pick_up:
+        # this is where the perception code (color detection) is located:
         for i in color_range:
             if i in __target_color:
                 detect_color = i
