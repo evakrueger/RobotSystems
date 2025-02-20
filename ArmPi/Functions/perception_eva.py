@@ -60,14 +60,13 @@ class ColorDetector:
     def find_box_space(self, img_processed):
         # Define LAB color range for the target color (e.g., 'red').
         color_range_eva = {
-        'red': [(0, 171, 136), (255, 255, 255)], 
-        'green': [(0, 0, 0), (76, 100, 255)],
-        'blue': [(0, 0, 100), (255, 255, 255)], 
-        'black': [(0, 0, 0), (56, 255, 255)], 
-        'white': [(193, 0, 0), (255, 250, 255)], 
+            'red': [(0, 171, 136), (255, 255, 255)], 
+            'green': [(0, 0, 0), (76, 115, 255)], 
+            'blue': [(0, 0, 0), (255, 255, 55)], 
+            'black': [(0, 0, 0), (56, 255, 255)], 
+            'white': [(193, 0, 0), (255, 250, 255)], 
         }
         for i in color_range_eva:
-            print("looping through color_range_eva")
             if i in self.target_colors:
                 self.detect_color = i
                 frame_mask = cv2.inRange(img_processed, color_range_eva[self.detect_color][0], color_range_eva[self.detect_color][1])  # Perform bit operations on the original image and mask
