@@ -60,8 +60,8 @@ class ColorDetector:
     def find_box_space(self, img_processed):
         for i in color_range:
             if i in self.target_colors:
-                detect_color = i
-                frame_mask = cv2.inRange(img_processed, color_range[detect_color][0], color_range[detect_color][1])  # Perform bit operations on the original image and mask
+                self.detect_color = i
+                frame_mask = cv2.inRange(img_processed, color_range[self.detect_color][0], color_range[self.detect_color][1])  # Perform bit operations on the original image and mask
                 opened = cv2.morphologyEx(frame_mask, cv2.MORPH_OPEN, np.ones((6, 6), np.uint8))  # Remove small noise.
                 closed = cv2.morphologyEx(opened, cv2.MORPH_CLOSE, np.ones((6, 6), np.uint8))  # Fill small holes.
                 contours = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[-2]  # find the countours
@@ -76,19 +76,19 @@ class ColorDetector:
             img_centerx, img_centery = getCenter(rect, roi, self.size, square_length)  # Get the center coordinates of the wooden block
             self.world_x, self.world_y = convertCoordinate(img_centerx, img_centery, self.size) #Convert to real world coordinates
         else:
-            return detect_color, None
-        return detect_color, box
+            return None
+        return box
     
-    def annotate_box(self, detect_color, box):
+    def annotate_box(self, box):
         if box is None:
             return self.img
-        cv2.drawContours(self.img, [box], -1, self.range_rgb[detect_color], 2)
+        cv2.drawContours(self.img, [box], -1, self.range_rgb[self.detect_color], 2)
         cv2.putText(self.img, '(' + str(self.world_x) + ',' + str(self.world_y) + ')', (min(box[0, 0], box[2, 0]), box[2, 1] - 10),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.range_rgb[detect_color], 1) #draw center point
+                cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.range_rgb[self.detect_color], 1) #draw center point
         self.distance = math.sqrt(pow(self.world_x - self.last_x, 2) + pow(self.world_y - self.last_y, 2)) #Compare the last coordinates to determine whether to move
         self.last_x, self.last_y = self.world_x, self.world_y
         self.track = True
-        print(f"{detect_color}: ({self.world_x},{self.world_y})")
+        print(f"{self.detect_color}: ({self.world_x},{self.world_y})")
         return self.img
 
 if __name__ == "__main__":
@@ -114,8 +114,8 @@ if __name__ == "__main__":
             frame = img.copy()  # Copy the frame to avoid modifying the original
             
             img_processed = detector.preprocess_image(frame)
-            detect_color, box = detector.find_box_space(img_processed)
-            annotated_img = detector.annotate_box(detect_color, box)
+            box = detector.find_box_space(img_processed)
+            annotated_img = detector.annotate_box(box)
             
             cv2.imshow('annotated image', annotated_img)  # Show the processed frame
 
