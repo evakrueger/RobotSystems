@@ -107,8 +107,8 @@ if __name__ == "__main__":
             frame = img.copy()  # Copy the frame to avoid modifying the original
             
             img_processed = detector.preprocess_image(frame)
-            world_x, world_y, detect_color = detector.find_box_space(img_processed)
-            last_x, last_y, annotated_img = detector.annotate_box(world_x, world_y, detect_color)
+            world_x, world_y, detect_color, box = detector.find_box_space(img_processed)
+            last_x, last_y, annotated_img = detector.annotate_box(world_x, world_y, detect_color, box)
             
             cv2.imshow('annotated image', annotated_img)  # Show the processed frame
 
