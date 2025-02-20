@@ -88,7 +88,7 @@ if __name__ == "__main__":
     # Define LAB color range for the target color (e.g., 'red').
     color_range = {
         'red': ((0, 150, 150), (255, 255, 255)),  # Example LAB color range for red detection.
-        'blue': ((20, 100, 100), (150, 255, 255)),
+        'blue': ((0, 50, -100), (50, 80, -40)),
         'green': ((30, 50, 50), (200, 255, 255))
     }
 
