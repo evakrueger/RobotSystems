@@ -88,10 +88,12 @@ if __name__ == "__main__":
     # Define LAB color range for the target color (e.g., 'red').
     color_range = {
         'red': ((0, 150, 150), (255, 255, 255)),  # Example LAB color range for red detection.
+        'blue': ((20, 100, 100), (150, 255, 255)),
+        'green': ((30, 50, 50), (200, 255, 255))
     }
 
     # Initialize the color detector for red objects
-    detector = ColorDetector(target_color='red')
+    detector = ColorDetector(target_color='blue')
 
     # Initialize and open the camera
     my_camera = Camera.Camera()
