@@ -32,6 +32,7 @@ class ColorDetector:
             'white': (255, 255, 255),
         }
         self.track = False
+        self.last_x, self.last_y = 0, 0
 
     def getAreaMaxContour(self, contours):
         contour_area_temp = 0
@@ -79,10 +80,10 @@ class ColorDetector:
         cv2.drawContours(self.img, [box], -1, self.range_rgb[detect_color], 2)
         cv2.putText(self.img, '(' + str(world_x) + ',' + str(world_y) + ')', (min(box[0, 0], box[2, 0]), box[2, 1] - 10),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.range_rgb[detect_color], 1) #draw center point
-        self.distance = math.sqrt(pow(world_x - last_x, 2) + pow(world_y - last_y, 2)) #Compare the last coordinates to determine whether to move
-        last_x, last_y = world_x, world_y
+        self.distance = math.sqrt(pow(world_x - self.last_x, 2) + pow(world_y - self.last_y, 2)) #Compare the last coordinates to determine whether to move
+        self.last_x, self.last_y = world_x, world_y
         self.track = True
-        return last_x, last_y, img
+        return img
 
 if __name__ == "__main__":
     # Define LAB color range for the target color (e.g., 'red').
@@ -108,7 +109,7 @@ if __name__ == "__main__":
             
             img_processed = detector.preprocess_image(frame)
             world_x, world_y, detect_color, box = detector.find_box_space(img_processed)
-            last_x, last_y, annotated_img = detector.annotate_box(world_x, world_y, detect_color, box)
+            annotated_img = detector.annotate_box(world_x, world_y, detect_color, box)
             
             cv2.imshow('annotated image', annotated_img)  # Show the processed frame
 
