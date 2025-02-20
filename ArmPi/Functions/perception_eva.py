@@ -113,8 +113,8 @@ if __name__ == "__main__":
 
             # If an object is detected, draw it on the frame
             if x is not None and y is not None:
-                # cv2.drawContours(img, [box], -1, 1, 2)
-                cv2.circle(frame, (x, y), 5, (0, 255, 0), -1)  # Draw a marker
+                cv2.drawContours(img, [box], -1, 1, 2)
+                # cv2.circle(frame, (x, y), 5, (0, 255, 0), -1)  # Draw a marker
                 cv2.putText(frame, f"{target_color} block at ({x}, {y})", (x + 10, y - 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)  # Display position
 
