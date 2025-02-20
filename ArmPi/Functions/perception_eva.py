@@ -73,7 +73,7 @@ class ColorDetector:
             cv2.drawContours(img, [box], -1, 1, 2)
             return int(center_x), int(center_y), box  # Return integer values for pixel coordinates.
 
-        return None, None  # Return None if no contour is detected.
+        return None, None, None  # Return None if no contour is detected.
 
     def process_frame(self, img, color_range):
         # Process a single frame to detect the target object and determine its position.
@@ -93,9 +93,11 @@ if __name__ == "__main__":
         'blue': ((20, 100, 100), (150, 255, 255)),
         'green': ((30, 0, 50), (120, 255, 255))
     }
+    
+    target_color='red'
 
     # Initialize the color detector for red objects
-    detector = ColorDetector(target_color='red')
+    detector = ColorDetector(target_color=target_color)
 
     # Initialize and open the camera
     my_camera = Camera.Camera()
