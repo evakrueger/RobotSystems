@@ -80,7 +80,7 @@ class ColorDetector:
         return detect_color, box
     
     def annotate_box(self, detect_color, box):
-        if box == None:
+        if box is None:
             return self.img
         cv2.drawContours(self.img, [box], -1, self.range_rgb[detect_color], 2)
         cv2.putText(self.img, '(' + str(self.world_x) + ',' + str(self.world_y) + ')', (min(box[0, 0], box[2, 0]), box[2, 1] - 10),
