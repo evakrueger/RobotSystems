@@ -95,7 +95,7 @@ if __name__ == "__main__":
     }
 
     # Initialize the color detector for red objects
-    detector = ColorDetector(target_color='green')
+    detector = ColorDetector(target_color='red')
 
     # Initialize and open the camera
     my_camera = Camera.Camera()
@@ -113,7 +113,7 @@ if __name__ == "__main__":
             if x is not None and y is not None:
                 # cv2.drawContours(img, [box], -1, 1, 2)
                 cv2.circle(frame, (x, y), 5, (0, 255, 0), -1)  # Draw a marker
-                cv2.putText(frame, f"Block at ({x}, {y})", (x + 10, y - 10),
+                cv2.putText(frame, f"{target_color} block at ({x}, {y})", (x + 10, y - 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)  # Display position
 
             cv2.imshow('Frame', frame)  # Show the processed frame
