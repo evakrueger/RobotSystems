@@ -70,6 +70,7 @@ class ColorDetector:
             rect = cv2.minAreaRect(contour)  # Get the minimum bounding rectangle around the contour.
             box = np.int0(cv2.boxPoints(rect))
             center_x, center_y = rect[0]  # Extract the center coordinates.
+            cv2.drawContours(img, [box], -1, 1, 2)
             return int(center_x), int(center_y), box  # Return integer values for pixel coordinates.
 
         return None, None  # Return None if no contour is detected.
@@ -110,7 +111,7 @@ if __name__ == "__main__":
 
             # If an object is detected, draw it on the frame
             if x is not None and y is not None:
-                cv2.drawContours(img, [box], -1, 1, 2)
+                # cv2.drawContours(img, [box], -1, 1, 2)
                 cv2.circle(frame, (x, y), 5, (0, 255, 0), -1)  # Draw a marker
                 cv2.putText(frame, f"Block at ({x}, {y})", (x + 10, y - 10),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)  # Display position
