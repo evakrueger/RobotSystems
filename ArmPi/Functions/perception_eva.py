@@ -68,7 +68,7 @@ class ColorDetector:
         }
         for i in color_range_eva:
             if i in self.target_colors:
-                print(f"color {i} in target colors")
+                # print(f"color {i} in target colors")
                 self.detect_color = i
                 frame_mask = cv2.inRange(img_processed, color_range_eva[self.detect_color][0], color_range_eva[self.detect_color][1])  # Perform bit operations on the original image and mask
                 opened = cv2.morphologyEx(frame_mask, cv2.MORPH_OPEN, np.ones((6, 6), np.uint8))  # Remove small noise.
@@ -85,6 +85,7 @@ class ColorDetector:
             img_centerx, img_centery = getCenter(rect, roi, self.size, square_length)  # Get the center coordinates of the wooden block
             self.world_x, self.world_y = convertCoordinate(img_centerx, img_centery, self.size) #Convert to real world coordinates
         else:
+            print(f"found no large area")
             return None
         return box
     
