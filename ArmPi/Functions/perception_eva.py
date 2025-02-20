@@ -100,7 +100,7 @@ class ColorDetector:
         return self.img
 
 if __name__ == "__main__":    
-    target_colors = ('green',)
+    target_colors = ('green','red', 'blue')
 
     # Initialize the color detector for red objects
     detector = ColorDetector(target_colors=target_colors)
