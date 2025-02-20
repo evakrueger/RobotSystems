@@ -60,45 +60,62 @@ class ColorDetector:
     def find_box_space(self, img_processed):
         # Define LAB color range for the target color (e.g., 'red').
         color_range_eva = {
-            'red': [(0, 171, 136), (255, 255, 255)], 
-            'green': [(0, 0, 0), (76, 115, 255)], 
+            'red': [(0, 171, 136), (255, 255, 255)],
+            'green': [(0, 0, 0), (76, 115, 255)],
             'blue': [(0, 0, 0), (255, 255, 100)],
-            'black': [(0, 0, 0), (56, 255, 255)], 
-            'white': [(193, 0, 0), (255, 250, 255)], 
+            'black': [(0, 0, 0), (56, 255, 255)],
+            'white': [(193, 0, 0), (255, 250, 255)],
         }
-        for i in color_range_eva:
-            if i in self.target_colors:
-                # print(f"color {i} in target colors")
-                self.detect_color = i
-                frame_mask = cv2.inRange(img_processed, color_range_eva[self.detect_color][0], color_range_eva[self.detect_color][1])  # Perform bit operations on the original image and mask
-                opened = cv2.morphologyEx(frame_mask, cv2.MORPH_OPEN, np.ones((6, 6), np.uint8))  # Remove small noise.
-                closed = cv2.morphologyEx(opened, cv2.MORPH_CLOSE, np.ones((6, 6), np.uint8))  # Fill small holes.
-                contours = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[-2]  # find the countours
-                areaMaxContour, area_max = self.getAreaMaxContour(contours)  # Find the maximum contour
-        if area_max > 2500:  # Found the largest area
-            rect = cv2.minAreaRect(areaMaxContour)
+        
+        max_contour = None
+        area_max = 0
+        detected_color = None
+        
+        # Iterate over all target colors in self.target_colors
+        for color in self.target_colors:
+            # Check if the color exists in the color range dictionary
+            if color in color_range_eva:
+                frame_mask = cv2.inRange(img_processed, color_range_eva[color][0], color_range_eva[color][1])  # Create a mask for this color
+                opened = cv2.morphologyEx(frame_mask, cv2.MORPH_OPEN, np.ones((6, 6), np.uint8))  # Remove small noise
+                closed = cv2.morphologyEx(opened, cv2.MORPH_CLOSE, np.ones((6, 6), np.uint8))  # Fill small holes
+                
+                contours = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[-2]  # Find contours
+                
+                # Get the largest contour
+                areaMaxContour, area_temp = self.getAreaMaxContour(contours)
+                if area_temp > area_max and area_temp > 2500:  # Ensure the area is large enough
+                    area_max = area_temp
+                    max_contour = areaMaxContour
+                    detected_color = color
+        
+        # Now if we found a valid contour, return its information
+        if max_contour is not None:
+            rect = cv2.minAreaRect(max_contour)
             box = np.int0(cv2.boxPoints(rect))
 
-            roi = getROI(box) #Get roi area
+            roi = getROI(box)  # Get roi area
             self.get_roi = True
 
-            img_centerx, img_centery = getCenter(rect, roi, self.size, square_length)  # Get the center coordinates of the wooden block
-            self.world_x, self.world_y = convertCoordinate(img_centerx, img_centery, self.size) #Convert to real world coordinates
-        else:
-            print(f"found no large area")
-            return None
-        return box
+            img_centerx, img_centery = getCenter(rect, roi, self.size, square_length)  # Get the center coordinates
+            self.world_x, self.world_y = convertCoordinate(img_centerx, img_centery, self.size)  # Convert to real world coordinates
+            return box, detected_color
+        
+        return None, None
     
-    def annotate_box(self, box):
+    def annotate_box(self, box, detected_color):
         if box is None:
             return self.img
-        cv2.drawContours(self.img, [box], -1, self.range_rgb[self.detect_color], 2)
-        cv2.putText(self.img, '(' + str(self.world_x) + ',' + str(self.world_y) + ')', (min(box[0, 0], box[2, 0]), box[2, 1] - 10),
-                cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.range_rgb[self.detect_color], 1) #draw center point
-        self.distance = math.sqrt(pow(self.world_x - self.last_x, 2) + pow(self.world_y - self.last_y, 2)) #Compare the last coordinates to determine whether to move
+        # Use the detected color to draw the contours and the center point
+        cv2.drawContours(self.img, [box], -1, self.range_rgb[detected_color], 2)
+        cv2.putText(self.img, '(' + str(self.world_x) + ',' + str(self.world_y) + ')', 
+                    (min(box[0, 0], box[2, 0]), box[2, 1] - 10),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.range_rgb[detected_color], 1)  # Draw center point
+        # Calculate the distance from the last position to the current position
+        self.distance = math.sqrt(pow(self.world_x - self.last_x, 2) + pow(self.world_y - self.last_y, 2))  
         self.last_x, self.last_y = self.world_x, self.world_y
         self.track = True
-        print(f"{self.detect_color}: ({self.world_x},{self.world_y})")
+        # Print out the coordinates and the color detected
+        print(f"{detected_color}: ({self.world_x},{self.world_y})")
         return self.img
 
 if __name__ == "__main__":    
