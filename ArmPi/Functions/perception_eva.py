@@ -88,7 +88,7 @@ class ColorDetector:
         self.distance = math.sqrt(pow(self.world_x - self.last_x, 2) + pow(self.world_y - self.last_y, 2)) #Compare the last coordinates to determine whether to move
         self.last_x, self.last_y = self.world_x, self.world_y
         self.track = True
-        print(f"{self.range_rgb[detect_color]}: ({self.world_x},{self.world_y})")
+        print(f"{detect_color}: ({self.world_x},{self.world_y})")
         return self.img
 
 if __name__ == "__main__":
