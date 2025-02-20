@@ -115,7 +115,7 @@ if __name__ == "__main__":
     target_colors = ('red',)
 
     # Initialize the color detector for red objects
-    detector = ColorDetector(target_color=target_colors)
+    detector = ColorDetector(target_colors=target_colors)
 
     # Initialize and open the camera
     my_camera = Camera.Camera()
