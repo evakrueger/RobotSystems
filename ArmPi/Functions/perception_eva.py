@@ -62,7 +62,7 @@ class ColorDetector:
         color_range_eva = {
             'red': [(0, 171, 136), (255, 255, 255)], 
             'green': [(0, 0, 0), (76, 115, 255)], 
-            'blue': [(0, 0, 0), (255, 255, 255)], 
+            'blue': [(0, 0, 255), (0, 255, 255)], 
             'black': [(0, 0, 0), (56, 255, 255)], 
             'white': [(193, 0, 0), (255, 250, 255)], 
         }
@@ -102,7 +102,7 @@ class ColorDetector:
         return self.img
 
 if __name__ == "__main__":    
-    target_colors = ('blue',)
+    target_colors = ('red',)
 
     # Initialize the color detector for red objects
     detector = ColorDetector(target_colors=target_colors)
