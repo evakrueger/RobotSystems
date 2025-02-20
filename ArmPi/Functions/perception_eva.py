@@ -33,6 +33,7 @@ class ColorDetector:
         }
         self.track = False
         self.last_x, self.last_y = 0, 0
+        self.world_x, self.world_y = 0, 0
 
     def getAreaMaxContour(self, contours):
         contour_area_temp = 0
@@ -73,15 +74,15 @@ class ColorDetector:
             self.get_roi = True
 
             img_centerx, img_centery = getCenter(rect, roi, self.size, square_length)  # Get the center coordinates of the wooden block
-            world_x, world_y = convertCoordinate(img_centerx, img_centery, self.size) #Convert to real world coordinates
-        return world_x, world_y, detect_color, box
+            self.world_x, self.world_y = convertCoordinate(img_centerx, img_centery, self.size) #Convert to real world coordinates
+        return detect_color, box
     
-    def annotate_box(self, world_x, world_y, detect_color, box):
+    def annotate_box(self, detect_color, box):
         cv2.drawContours(self.img, [box], -1, self.range_rgb[detect_color], 2)
-        cv2.putText(self.img, '(' + str(world_x) + ',' + str(world_y) + ')', (min(box[0, 0], box[2, 0]), box[2, 1] - 10),
+        cv2.putText(self.img, '(' + str(self.world_x) + ',' + str(self.world_y) + ')', (min(box[0, 0], box[2, 0]), box[2, 1] - 10),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, self.range_rgb[detect_color], 1) #draw center point
-        self.distance = math.sqrt(pow(world_x - self.last_x, 2) + pow(world_y - self.last_y, 2)) #Compare the last coordinates to determine whether to move
-        self.last_x, self.last_y = world_x, world_y
+        self.distance = math.sqrt(pow(self.world_x - self.last_x, 2) + pow(self.world_y - self.last_y, 2)) #Compare the last coordinates to determine whether to move
+        self.last_x, self.last_y = self.world_x, self.world_y
         self.track = True
         return self.img
 
@@ -108,8 +109,8 @@ if __name__ == "__main__":
             frame = img.copy()  # Copy the frame to avoid modifying the original
             
             img_processed = detector.preprocess_image(frame)
-            world_x, world_y, detect_color, box = detector.find_box_space(img_processed)
-            annotated_img = detector.annotate_box(world_x, world_y, detect_color, box)
+            detect_color, box = detector.find_box_space(img_processed)
+            annotated_img = detector.annotate_box(detect_color, box)
             
             cv2.imshow('annotated image', annotated_img)  # Show the processed frame
 
