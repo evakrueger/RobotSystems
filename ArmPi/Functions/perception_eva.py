@@ -127,7 +127,7 @@ if __name__ == "__main__":
             frame = img.copy()  # Copy the frame to avoid modifying the original
             
             # Process the frame using the color detection pipeline
-            x, y, box = detector.process_frame(frame, color_range)
+            x, y, box = detector.process_frame(frame, color_range, i=0)
 
             # If an object is detected, draw it on the frame
             if x is not None and y is not None:
