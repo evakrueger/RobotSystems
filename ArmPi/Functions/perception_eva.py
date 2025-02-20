@@ -58,10 +58,18 @@ class ColorDetector:
         return frame_lab
 
     def find_box_space(self, img_processed):
-        for i in color_range:
+        # Define LAB color range for the target color (e.g., 'red').
+        color_range_eva = {
+        'red': [(0, 171, 136), (255, 255, 255)], 
+        'green': [(0, 0, 0), (76, 100, 255)],
+        'blue': [(0, 0, 100), (255, 255, 255)], 
+        'black': [(0, 0, 0), (56, 255, 255)], 
+        'white': [(193, 0, 0), (255, 250, 255)], 
+        }
+        for i in color_range_eva:
             if i in self.target_colors:
                 self.detect_color = i
-                frame_mask = cv2.inRange(img_processed, color_range[self.detect_color][0], color_range[self.detect_color][1])  # Perform bit operations on the original image and mask
+                frame_mask = cv2.inRange(img_processed, color_range_eva[self.detect_color][0], color_range_eva[self.detect_color][1])  # Perform bit operations on the original image and mask
                 opened = cv2.morphologyEx(frame_mask, cv2.MORPH_OPEN, np.ones((6, 6), np.uint8))  # Remove small noise.
                 closed = cv2.morphologyEx(opened, cv2.MORPH_CLOSE, np.ones((6, 6), np.uint8))  # Fill small holes.
                 contours = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[-2]  # find the countours
@@ -91,14 +99,7 @@ class ColorDetector:
         print(f"{self.detect_color}: ({self.world_x},{self.world_y})")
         return self.img
 
-if __name__ == "__main__":
-    # Define LAB color range for the target color (e.g., 'red').
-    color_range = {
-        'red': ((0, 150, 150), (255, 255, 255)),  # Example LAB color range for red detection.
-        'blue': ((20, 100, 100), (150, 255, 255)),
-        'green': ((30, 0, 50), (120, 255, 255))
-    }
-    
+if __name__ == "__main__":    
     target_colors = ('green',)
 
     # Initialize the color detector for red objects
