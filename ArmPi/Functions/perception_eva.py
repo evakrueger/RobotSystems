@@ -75,6 +75,8 @@ class ColorDetector:
 
             img_centerx, img_centery = getCenter(rect, roi, self.size, square_length)  # Get the center coordinates of the wooden block
             self.world_x, self.world_y = convertCoordinate(img_centerx, img_centery, self.size) #Convert to real world coordinates
+        else:
+            return None, None
         return detect_color, box
     
     def annotate_box(self, detect_color, box):
