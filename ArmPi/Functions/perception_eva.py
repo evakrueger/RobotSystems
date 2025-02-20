@@ -93,7 +93,7 @@ class ColorDetector:
 
         return None, None, None  # Return None if no contour is detected.
 
-    def process_frame(self, img, color_range):
+    def process_frame(self, img, color_range, i):
         # Process a single frame to detect the target object and determine its position.
         # :param img: Input image frame.
         # :param color_range: Dictionary of LAB color ranges.
