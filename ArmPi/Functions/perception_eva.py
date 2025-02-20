@@ -34,7 +34,7 @@ class ColorDetector:
         # :param color_range: Dictionary containing LAB color ranges for different colors.
         # :return: List of detected contours.
         frame_lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)  # Convert BGR image to LAB color space.
-        detect_color = self.target_color[i]  # Get the target color for detection.
+        detect_color = self.target_colors[i]  # Get the target color for detection.
 
         # Apply color threshold to isolate the target color.
         frame_mask = cv2.inRange(frame_lab, color_range[detect_color][0], color_range[detect_color][1])
