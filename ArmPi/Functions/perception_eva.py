@@ -67,6 +67,7 @@ class ColorDetector:
         'white': [(193, 0, 0), (255, 250, 255)], 
         }
         for i in color_range_eva:
+            print("looping through color_range_eva")
             if i in self.target_colors:
                 self.detect_color = i
                 frame_mask = cv2.inRange(img_processed, color_range_eva[self.detect_color][0], color_range_eva[self.detect_color][1])  # Perform bit operations on the original image and mask
