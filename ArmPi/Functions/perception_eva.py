@@ -67,9 +67,8 @@ class ColorDetector:
             'white': [(193, 0, 0), (255, 250, 255)], 
         }
         for i in color_range_eva:
-            print("eva loop")
             if i in self.target_colors:
-                print("color in target colors")
+                print(f"color {i} in target colors")
                 self.detect_color = i
                 frame_mask = cv2.inRange(img_processed, color_range_eva[self.detect_color][0], color_range_eva[self.detect_color][1])  # Perform bit operations on the original image and mask
                 opened = cv2.morphologyEx(frame_mask, cv2.MORPH_OPEN, np.ones((6, 6), np.uint8))  # Remove small noise.
