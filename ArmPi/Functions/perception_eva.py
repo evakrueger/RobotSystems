@@ -99,7 +99,7 @@ if __name__ == "__main__":
         'green': ((30, 0, 50), (120, 255, 255))
     }
     
-    target_colors = ('blue',)
+    target_colors = ('green',)
 
     # Initialize the color detector for red objects
     detector = ColorDetector(target_colors=target_colors)
