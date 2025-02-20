@@ -83,7 +83,7 @@ class ColorDetector:
         self.distance = math.sqrt(pow(world_x - self.last_x, 2) + pow(world_y - self.last_y, 2)) #Compare the last coordinates to determine whether to move
         self.last_x, self.last_y = world_x, world_y
         self.track = True
-        return img
+        return self.img
 
 if __name__ == "__main__":
     # Define LAB color range for the target color (e.g., 'red').
