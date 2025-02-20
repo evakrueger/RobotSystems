@@ -71,6 +71,7 @@ class ColorDetector:
                 # print(f"color {i} in target colors")
                 self.detect_color = i
                 frame_mask = cv2.inRange(img_processed, color_range_eva[self.detect_color][0], color_range_eva[self.detect_color][1])  # Perform bit operations on the original image and mask
+                cv2.imshow('mask blue image', frame_mask)
                 opened = cv2.morphologyEx(frame_mask, cv2.MORPH_OPEN, np.ones((6, 6), np.uint8))  # Remove small noise.
                 closed = cv2.morphologyEx(opened, cv2.MORPH_CLOSE, np.ones((6, 6), np.uint8))  # Fill small holes.
                 contours = cv2.findContours(closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)[-2]  # find the countours
