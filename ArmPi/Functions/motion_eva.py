@@ -31,6 +31,7 @@ def setBuzzer(timer):
     
 class MoveHandler:
     def __init__(self, AK, servo1):
+        print("mover INIT")
         self.AK = AK
         self.servo1 = servo1
         self.__isRunning = False
@@ -49,6 +50,7 @@ class MoveHandler:
         }
 
     def pick_up_object(self):
+        print("mover PICK UP OBJECT")
         self.action_finish = False
         Board.setBusServoPulse(1, self.servo1 - 280, 500)
         servo2_angle = getAngle(self.world_X, self.world_Y, -90)
@@ -63,15 +65,18 @@ class MoveHandler:
         self.reset_position()
 
     def lower_arm(self):
+        print("mover LOWER ARM")
         self.AK.setPitchRangeMoving((self.world_X, self.world_Y, 2), -90, -90, 0, 1000)
         time.sleep(2)
 
     def lift_arm(self):
+        print("mover LIFT ARM")
         Board.setBusServoPulse(2, 500, 500)
         self.AK.setPitchRangeMoving((self.world_X, self.world_Y, 12), -90, -90, 0, 1000)
         time.sleep(1)
 
     def move_to_target(self):
+        print("mover MOVE TO TARGET")
         result = self.AK.setPitchRangeMoving(self.coordinate[self.detect_color], -90, -90, 0)
         time.sleep(result[2] / 1000)
         servo2_angle = getAngle(self.coordinate[self.detect_color][0], self.coordinate[self.detect_color][1], -90)
@@ -83,12 +88,14 @@ class MoveHandler:
         time.sleep(0.8)
 
     def release_object(self):
+        print("mover RELEASE OBJECT")
         Board.setBusServoPulse(1, self.servo1 - 200, 500)
         time.sleep(0.8)
         self.AK.setPitchRangeMoving((self.coordinate[self.detect_color][0], self.coordinate[self.detect_color][1], 12), -90, -90, 0, 800)
         time.sleep(0.8)
 
     def reset_position(self):
+        print("mover RESET POSITION")
         initMove()
         time.sleep(1.5)
         self.detect_color = 'None'
@@ -97,6 +104,7 @@ class MoveHandler:
         self.start_pick_up = False
 
     def move(self):
+        print("mover MOVE")
         while True:
             if self.__isRunning:
                 if self.first_move and self.start_pick_up:
@@ -147,7 +155,7 @@ if __name__ == "__main__":
             cv2.imshow('annotated image', annotated_img)
             
             if detected_color_temp:
-                print("object detected")
+                # print("object detected")
                 move_handler.detect_color = detected_color_temp
                 move_handler.world_X, move_handler.world_Y = detector.world_x, detector.world_y
                 move_handler.track = detector.track
