@@ -32,7 +32,6 @@ def setBuzzer(timer):
 class MoveHandler:
     def __init__(self, color_tracker):
         self.color_tracker = color_tracker
-        self.rect
         self.track
         self._stop
         self.get_roi
