@@ -53,24 +53,24 @@ class MoveHandler:
             'blue':  (-15 + 0.5, 0 - 0.5,  1.5),
         }
         while True:
-            if first_move and start_pick_up: # When an object is first detected               
-                action_finish = False
+            if self.first_move and self.start_pick_up: # When an object is first detected               
+                self.action_finish = False
                 setBuzzer(0.1)               
                 result = AK.setPitchRangeMoving((self.color_tracker.last_x, self.color_tracker.last_y - 2, 5), -90, -90, 0) # If the running time parameter is not filled in, the running time will be adaptive.
                 if result == False:
-                    unreachable = True
+                    self.unreachable = True
                 else:
-                    unreachable = False
+                    self.unreachable = False
                 time.sleep(result[2]/1000) # The third item of the return parameter is time
-                start_pick_up = False
-                first_move = False
-                action_finish = True
-            elif not first_move and not unreachable: # This is not the first time an object is detected
-                if track: # If it is the tracking stage # Stop and exit flag detectioe
+                self.start_pick_up = False
+                self.first_move = False
+                self.action_finish = True
+            elif not self.first_move and not self.unreachable: # This is not the first time an object is detected
+                if self.track: # If it is the tracking stage # Stop and exit flag detectioe
                     AK.setPitchRangeMoving((self.color_tracker.last_x, self.color_tracker.last_y - 2, 5), -90, -90, 0, 20)
                     time.sleep(0.02)                    
                     track = False
-                if start_pick_up: #If the object has not moved for a while, start gripping
+                if self.start_pick_up: #If the object has not moved for a while, start gripping
                     action_finish = False # Stop and exit flag detectioe
                     Board.setBusServoPulse(1, servo1 - 280, 500)  # Claws spread
                     # Calculate the angle by which the gripper needs to be rotated
@@ -111,11 +111,11 @@ class MoveHandler:
                     initMove()  # Return to initial position
                     time.sleep(1.5)
 
-                    detect_color = 'None'
-                    first_move = True
-                    get_roi = False
-                    action_finish = True
-                    start_pick_up = False
+                    self.detect_color = 'None'
+                    self.first_move = True
+                    self.get_roi = False
+                    self.action_finish = True
+                    self.start_pick_up = False
                 else:
                     time.sleep(0.01)
                     
