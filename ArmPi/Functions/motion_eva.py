@@ -106,33 +106,32 @@ class MoveHandler:
     def move(self):
         print("mover MOVE")
         while True:
-            if self.__isRunning:
-                if self.first_move and self.start_pick_up:
-                    self.action_finish = False
-                    setBuzzer(0.1)
-                    result = self.AK.setPitchRangeMoving((self.world_X, self.world_Y - 2, 5), -90, -90, 0)
-                    self.unreachable = not result
-                    time.sleep(result[2] / 1000 if result else 0)
-                    self.start_pick_up = False
-                    self.first_move = False
-                    self.action_finish = True
-                elif not self.first_move and not self.unreachable:
-                    if self.track:
-                        if not self.__isRunning:
-                            continue
-                        self.AK.setPitchRangeMoving((self.world_X, self.world_Y - 2, 5), -90, -90, 0, 20)
-                        time.sleep(0.02)
-                        self.track = False
-                    if self.start_pick_up:
-                        self.pick_up_object()
-                    else:
-                        time.sleep(0.01)
-            else:
-                if self._stop:
-                    self._stop = False
-                    initMove()
-                    time.sleep(1.5)
-                time.sleep(0.01)
+            if self.first_move and self.start_pick_up:
+                self.action_finish = False
+                setBuzzer(0.1)
+                result = self.AK.setPitchRangeMoving((self.world_X, self.world_Y - 2, 5), -90, -90, 0)
+                self.unreachable = not result
+                time.sleep(result[2] / 1000 if result else 0)
+                self.start_pick_up = False
+                self.first_move = False
+                self.action_finish = True
+            elif not self.first_move and not self.unreachable:
+                if self.track:
+                    if not self.__isRunning:
+                        continue
+                    self.AK.setPitchRangeMoving((self.world_X, self.world_Y - 2, 5), -90, -90, 0, 20)
+                    time.sleep(0.02)
+                    self.track = False
+                if self.start_pick_up:
+                    self.pick_up_object()
+                else:
+                    time.sleep(0.01)
+        else:
+            if self._stop:
+                self._stop = False
+                initMove()
+                time.sleep(1.5)
+            time.sleep(0.01)
 
 if __name__ == "__main__":
     detector = ColorDetector()
