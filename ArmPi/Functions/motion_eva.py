@@ -51,7 +51,6 @@ class MoveHandler:
 
     def pick_up_object(self):
         print("mover PICK UP OBJECT")
-        self.action_finish = False
         Board.setBusServoPulse(1, self.servo1 - 280, 500)
         servo2_angle = getAngle(self.world_X, self.world_Y, -90)
         Board.setBusServoPulse(2, servo2_angle, 500)
@@ -117,12 +116,9 @@ class MoveHandler:
                 self.action_finish = True
             elif not self.first_move and not self.unreachable:
                 if self.track:
-                    # if not self.__isRunning:
-                    #     continue
                     print("self.track is True")
                     self.AK.setPitchRangeMoving((self.world_X, self.world_Y - 2, 5), -90, -90, 0, 20)
                     time.sleep(0.02)
-                    self.track = False
                 if self.start_pick_up:
                     print("self.start_pick_up is True")
                     self.pick_up_object()
