@@ -94,7 +94,7 @@ class MoveHandler:
         time.sleep(0.8)
 
     def reset_position(self):
-        print("mover RESET POSITION")
+        print("Resetting: first_move set to True, start_pick_up set to False")
         initMove()
         time.sleep(1.5)
         self.detect_color = 'None'
@@ -125,18 +125,13 @@ class MoveHandler:
                 else:
                     print("self.start_pick_up is False")
                     time.sleep(0.01)
-        else:
-            if self._stop:
-                self._stop = False
-                initMove()
-                time.sleep(1.5)
-            time.sleep(0.01)
 
 if __name__ == "__main__":
     detector = ColorDetector()
     my_camera = Camera.Camera()
     my_camera.camera_open()
-    move_handler = MoveHandler(AK, detector)
+    move_handler = MoveHandler(AK, servo1)
+
     
     move_thread = threading.Thread(target=move_handler.move)
     move_thread.daemon = True
@@ -159,6 +154,7 @@ if __name__ == "__main__":
                 move_handler.track = detector.track
                 
                 if move_handler.first_move:
+                    print("Setting start_pick_up to True")
                     move_handler.start_pick_up = True
             
             key = cv2.waitKey(1)
