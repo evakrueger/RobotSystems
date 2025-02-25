@@ -15,6 +15,7 @@ import time
 from perception_eva import ColorDetector
 
 AK = ArmIK()
+servo1 = 500
 # class RoboticArm:
 #     def __init__(self, target_colors=('red', 'green', 'blue')):
 #         self.detector = ColorDetector(target_colors)
@@ -164,7 +165,7 @@ def setBuzzer(timer):
     Board.setBuzzer(0)
 
 # Robotic arm moving thread
-def move():
+def move(world_x, world_y):
     global rect
     global track
     global _stop
@@ -175,7 +176,7 @@ def move():
     global action_finish
     global rotation_angle
     global world_X, world_Y
-    global world_x, world_y
+    # global world_x, world_y
     global center_list, count
     global start_pick_up, first_move
 
@@ -305,7 +306,7 @@ if __name__ == "__main__":
     _stop = False
 
     # Start move function in a separate thread
-    move_thread = threading.Thread(target=move)
+    move_thread = threading.Thread(target=move(world_X, world_Y))
     move_thread.daemon = True
     move_thread.start()
 
