@@ -30,26 +30,71 @@ def setBuzzer(timer):
     Board.setBuzzer(0)
     
 class MoveHandler:
-    def __init__(self, arm_ik, detector):
-        self.AK = arm_ik
-        self.detector = detector
-        self.servo1 = 500
-        self.__isRunning = True
+    def __init__(self, AK, servo1):
+        self.AK = AK
+        self.servo1 = servo1
+        self.__isRunning = False
         self._stop = False
         self.first_move = True
         self.start_pick_up = False
-        self.unreachable = False
         self.action_finish = False
-        self.detect_color = None
-        self.world_X = 0
-        self.world_Y = 0
+        self.unreachable = False
         self.track = False
-        
+        self.detect_color = "None"
+        self.world_X, self.world_Y = 0, 0
         self.coordinate = {
-            'red': (-14.5, 11.5, 1.5),
-            'green': (-14.5, 5.5, 1.5),
-            'blue': (-14.5, -0.5, 1.5),
+            'red': (-15 + 0.5, 12 - 0.5, 1.5),
+            'green': (-15 + 0.5, 6 - 0.5, 1.5),
+            'blue': (-15 + 0.5, 0 - 0.5, 1.5),
         }
+
+    def pick_up_object(self):
+        self.action_finish = False
+        Board.setBusServoPulse(1, self.servo1 - 280, 500)
+        servo2_angle = getAngle(self.world_X, self.world_Y, -90)
+        Board.setBusServoPulse(2, servo2_angle, 500)
+        time.sleep(0.8)
+        self.lower_arm()
+        Board.setBusServoPulse(1, self.servo1, 500)
+        time.sleep(1)
+        self.lift_arm()
+        self.move_to_target()
+        self.release_object()
+        self.reset_position()
+
+    def lower_arm(self):
+        self.AK.setPitchRangeMoving((self.world_X, self.world_Y, 2), -90, -90, 0, 1000)
+        time.sleep(2)
+
+    def lift_arm(self):
+        Board.setBusServoPulse(2, 500, 500)
+        self.AK.setPitchRangeMoving((self.world_X, self.world_Y, 12), -90, -90, 0, 1000)
+        time.sleep(1)
+
+    def move_to_target(self):
+        result = self.AK.setPitchRangeMoving(self.coordinate[self.detect_color], -90, -90, 0)
+        time.sleep(result[2] / 1000)
+        servo2_angle = getAngle(self.coordinate[self.detect_color][0], self.coordinate[self.detect_color][1], -90)
+        Board.setBusServoPulse(2, servo2_angle, 500)
+        time.sleep(0.5)
+        self.AK.setPitchRangeMoving((self.coordinate[self.detect_color][0], self.coordinate[self.detect_color][1], self.coordinate[self.detect_color][2] + 3), -90, -90, 0, 500)
+        time.sleep(0.5)
+        self.AK.setPitchRangeMoving(self.coordinate[self.detect_color], -90, -90, 0, 1000)
+        time.sleep(0.8)
+
+    def release_object(self):
+        Board.setBusServoPulse(1, self.servo1 - 200, 500)
+        time.sleep(0.8)
+        self.AK.setPitchRangeMoving((self.coordinate[self.detect_color][0], self.coordinate[self.detect_color][1], 12), -90, -90, 0, 800)
+        time.sleep(0.8)
+
+    def reset_position(self):
+        initMove()
+        time.sleep(1.5)
+        self.detect_color = 'None'
+        self.first_move = True
+        self.action_finish = True
+        self.start_pick_up = False
 
     def move(self):
         while True:
@@ -58,11 +103,8 @@ class MoveHandler:
                     self.action_finish = False
                     setBuzzer(0.1)
                     result = self.AK.setPitchRangeMoving((self.world_X, self.world_Y - 2, 5), -90, -90, 0)
-                    if not result:
-                        self.unreachable = True
-                    else:
-                        self.unreachable = False
-                    time.sleep(result[2] / 1000)
+                    self.unreachable = not result
+                    time.sleep(result[2] / 1000 if result else 0)
                     self.start_pick_up = False
                     self.first_move = False
                     self.action_finish = True
@@ -74,68 +116,7 @@ class MoveHandler:
                         time.sleep(0.02)
                         self.track = False
                     if self.start_pick_up:
-                        self.action_finish = False
-                        if not self.__isRunning:
-                            continue
-                        Board.setBusServoPulse(1, self.servo1 - 280, 500)
-                        servo2_angle = getAngle(self.world_X, self.world_Y, -90)
-                        Board.setBusServoPulse(2, servo2_angle, 500)
-                        time.sleep(0.8)
-                        
-                        if not self.__isRunning:
-                            continue
-                        self.AK.setPitchRangeMoving((self.world_X, self.world_Y, 2), -90, -90, 0, 1000)
-                        time.sleep(2)
-                        
-                        if not self.__isRunning:
-                            continue
-                        Board.setBusServoPulse(1, self.servo1, 500)
-                        time.sleep(1)
-                        
-                        if not self.__isRunning:
-                            continue
-                        Board.setBusServoPulse(2, 500, 500)
-                        self.AK.setPitchRangeMoving((self.world_X, self.world_Y, 12), -90, -90, 0, 1000)
-                        time.sleep(1)
-                        
-                        if not self.__isRunning:
-                            continue
-                        result = self.AK.setPitchRangeMoving(self.coordinate[self.detect_color], -90, -90, 0)
-                        time.sleep(result[2] / 1000)
-                        
-                        if not self.__isRunning:
-                            continue
-                        servo2_angle = getAngle(self.coordinate[self.detect_color][0], self.coordinate[self.detect_color][1], -90)
-                        Board.setBusServoPulse(2, servo2_angle, 500)
-                        time.sleep(0.5)
-                        
-                        if not self.__isRunning:
-                            continue
-                        self.AK.setPitchRangeMoving((self.coordinate[self.detect_color][0], self.coordinate[self.detect_color][1], self.coordinate[self.detect_color][2] + 3), -90, -90, 0, 500)
-                        time.sleep(0.5)
-                        
-                        if not self.__isRunning:
-                            continue
-                        self.AK.setPitchRangeMoving(self.coordinate[self.detect_color], -90, -90, 0, 1000)
-                        time.sleep(0.8)
-                        
-                        if not self.__isRunning:
-                            continue
-                        Board.setBusServoPulse(1, self.servo1 - 200, 500)
-                        time.sleep(0.8)
-                        
-                        if not self.__isRunning:
-                            continue
-                        self.AK.setPitchRangeMoving((self.coordinate[self.detect_color][0], self.coordinate[self.detect_color][1], 12), -90, -90, 0, 800)
-                        time.sleep(0.8)
-                        
-                        initMove()
-                        time.sleep(1.5)
-                        
-                        self.detect_color = 'None'
-                        self.first_move = True
-                        self.action_finish = True
-                        self.start_pick_up = False
+                        self.pick_up_object()
                     else:
                         time.sleep(0.01)
             else:
