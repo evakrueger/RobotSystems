@@ -52,9 +52,9 @@ class MoveHandler:
 
     def move(self):
         while True:
-            if self.perception.current_colour != "None":
-                current_colour = self.perception.current_colour
-                self.set_led_colour(current_colour)
+            if self.perception.current_color != "None":
+                current_color = self.perception.current_color
+                self.set_led_colour(current_color)
 
                 desired_x, desired_y, desired_angle = self.perception.last_x, self.perception.last_y, self.perception.rotation_angle
                 result = self.arm_kinematics.setPitchRangeMoving((desired_x, desired_y, self.desired_approach_height_grasp), -90, -90, 0)  
@@ -77,29 +77,29 @@ class MoveHandler:
                     self.arm_kinematics.setPitchRangeMoving((desired_x, desired_y, self.desired_approach_height_grasp), -90, -90, 0, 1000)
                     time.sleep(2*self.sleep_time)
 
-                    result = self.arm_kinematics.setPitchRangeMoving((self.colour_coordinates[current_colour][0], self.colour_coordinates[current_colour][1], 12), -90, -90, 0)   
+                    result = self.arm_kinematics.setPitchRangeMoving((self.colour_coordinates[current_color][0], self.colour_coordinates[current_color][1], 12), -90, -90, 0)   
                     time.sleep(result[2]/self.sleep_divider)
                                     
-                    block_rotation = getAngle(self.colour_coordinates[current_colour][0], self.colour_coordinates[current_colour][1], -90)
+                    block_rotation = getAngle(self.colour_coordinates[current_color][0], self.colour_coordinates[current_color][1], -90)
                     Board.setBusServoPulse(self.servo_2_id, block_rotation, self.gripper_closed)
                     time.sleep(self.sleep_time)
 
-                    self.arm_kinematics.setPitchRangeMoving((self.colour_coordinates[current_colour][0], self.colour_coordinates[current_colour][1], self.colour_coordinates[current_colour][2] + 3), -90, -90, 0, 500)
+                    self.arm_kinematics.setPitchRangeMoving((self.colour_coordinates[current_color][0], self.colour_coordinates[current_color][1], self.colour_coordinates[current_color][2] + 3), -90, -90, 0, 500)
                     time.sleep(self.sleep_time)
                                         
-                    self.arm_kinematics.setPitchRangeMoving((self.colour_coordinates[current_colour]), -90, -90, 0, 1000)
+                    self.arm_kinematics.setPitchRangeMoving((self.colour_coordinates[current_color]), -90, -90, 0, 1000)
                     time.sleep(self.sleep_time)
 
                     Board.setBusServoPulse(1, self.gripper_closed - self.gripper_open, self.gripper_closed)
                     time.sleep(self.sleep_time)
 
-                    self.arm_kinematics.setPitchRangeMoving((self.colour_coordinates[current_colour][0], self.colour_coordinates[current_colour][1], 12), -90, -90, 0, 800)
+                    self.arm_kinematics.setPitchRangeMoving((self.colour_coordinates[current_color][0], self.colour_coordinates[current_color][1], 12), -90, -90, 0, 800)
                     time.sleep(self.sleep_time)
 
                     self.move_home()
 
-                    current_colour = 'None'
-                    self.set_led_colour(current_colour)
+                    current_color = 'None'
+                    self.set_led_colour(current_color)
                     time.sleep(3*self.sleep_time)
 
 if __name__ == "__main__":
