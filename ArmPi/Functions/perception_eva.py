@@ -32,6 +32,7 @@ class ColorDetector:
         }
         self.track = False
         self.last_x, self.last_y = 0, 0
+        self.rotation_angle = 0
         self.world_x, self.world_y = 0, 0
         self.current_color = 'None'
 
@@ -92,6 +93,7 @@ class ColorDetector:
         # Now if we found a valid contour, return its information
         if max_contour is not None:
             rect = cv2.minAreaRect(max_contour)
+            self.rotation_angle = rect[2]
             box = np.int0(cv2.boxPoints(rect))
 
             roi = getROI(box)  # Get roi area
