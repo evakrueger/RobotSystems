@@ -49,82 +49,57 @@ class MoveHandler:
             'blue': (-15 + 0.5, 0 - 0.5, 1.5),
         }
 
-    def pick_up_object(self):
-        print("mover PICK UP OBJECT")
-        Board.setBusServoPulse(1, self.servo1 - 280, 500)
-        servo2_angle = getAngle(self.world_X, self.world_Y, -90)
-        Board.setBusServoPulse(2, servo2_angle, 500)
-        time.sleep(0.8)
-        self.lower_arm()
-        Board.setBusServoPulse(1, self.servo1, 500)
-        time.sleep(1)
-        self.lift_arm()
-        self.move_to_target()
-        self.release_object()
-        self.reset_position()
-
-    def lower_arm(self):
-        print("mover LOWER ARM")
-        self.AK.setPitchRangeMoving((self.world_X, self.world_Y, 2), -90, -90, 0, 1000)
-        time.sleep(2)
-
-    def lift_arm(self):
-        print("mover LIFT ARM")
-        Board.setBusServoPulse(2, 500, 500)
-        self.AK.setPitchRangeMoving((self.world_X, self.world_Y, 12), -90, -90, 0, 1000)
-        time.sleep(1)
-
-    def move_to_target(self):
-        print("mover MOVE TO TARGET")
-        result = self.AK.setPitchRangeMoving(self.coordinate[self.detect_color], -90, -90, 0)
-        time.sleep(result[2] / 1000)
-        servo2_angle = getAngle(self.coordinate[self.detect_color][0], self.coordinate[self.detect_color][1], -90)
-        Board.setBusServoPulse(2, servo2_angle, 500)
-        time.sleep(0.5)
-        self.AK.setPitchRangeMoving((self.coordinate[self.detect_color][0], self.coordinate[self.detect_color][1], self.coordinate[self.detect_color][2] + 3), -90, -90, 0, 500)
-        time.sleep(0.5)
-        self.AK.setPitchRangeMoving(self.coordinate[self.detect_color], -90, -90, 0, 1000)
-        time.sleep(0.8)
-
-    def release_object(self):
-        print("mover RELEASE OBJECT")
-        Board.setBusServoPulse(1, self.servo1 - 200, 500)
-        time.sleep(0.8)
-        self.AK.setPitchRangeMoving((self.coordinate[self.detect_color][0], self.coordinate[self.detect_color][1], 12), -90, -90, 0, 800)
-        time.sleep(0.8)
-
-    def reset_position(self):
-        print("Resetting: first_move set to True, start_pick_up set to False")
-        initMove()
-        time.sleep(1.5)
-        self.detect_color = 'None'
-        self.first_move = True
-        self.action_finish = True
-        self.start_pick_up = False
-
     def move(self):
-        print("mover MOVE")
         while True:
-            if self.first_move and self.start_pick_up:
-                self.action_finish = False
-                setBuzzer(0.1)
-                result = self.AK.setPitchRangeMoving((self.world_X, self.world_Y - 2, 5), -90, -90, 0)
-                self.unreachable = not result
-                time.sleep(result[2] / 1000 if result else 0)
-                self.start_pick_up = False
-                self.first_move = False
-                self.action_finish = True
-            elif not self.first_move and not self.unreachable:
-                if self.track:
-                    print("self.track is True")
-                    self.AK.setPitchRangeMoving((self.world_X, self.world_Y - 2, 5), -90, -90, 0, 20)
-                    time.sleep(0.02)
-                if self.start_pick_up:
-                    print("self.start_pick_up is True")
-                    self.pick_up_object()
-                else:
-                    print("self.start_pick_up is False")
-                    time.sleep(0.01)
+            if self.perception.current_colour != "None":
+                current_colour = self.perception.current_colour
+                self.set_led_colour(current_colour)
+
+                desired_x, desired_y, desired_angle = self.perception.last_x, self.perception.last_y, self.perception.rotation_angle
+                result = self.arm_kinematics.setPitchRangeMoving((desired_x, desired_y, self.desired_approach_height_grasp), -90, -90, 0)  
+
+                if result:
+                    time.sleep(result[2]/self.sleep_divider)
+
+                    block_rotation = getAngle(desired_x, desired_y, desired_angle)
+                    Board.setBusServoPulse(self.servo_1_id, self.gripper_closed - self.gripper_open, self.gripper_closed)
+                    Board.setBusServoPulse(self.servo_2_id, block_rotation, self.gripper_closed)
+                    time.sleep(self.sleep_time)
+
+                    self.arm_kinematics.setPitchRangeMoving((desired_x, desired_y, self.desired_final_height_grasp), -90, -90, 0, 1000)
+                    time.sleep(self.sleep_time)
+
+                    Board.setBusServoPulse(self.servo_1_id, self.gripper_closed, self.gripper_closed)
+                    time.sleep(self.sleep_time)
+
+                    Board.setBusServoPulse(self.servo_2_id, self.gripper_closed, self.gripper_closed)
+                    self.arm_kinematics.setPitchRangeMoving((desired_x, desired_y, self.desired_approach_height_grasp), -90, -90, 0, 1000)
+                    time.sleep(2*self.sleep_time)
+
+                    result = self.arm_kinematics.setPitchRangeMoving((self.colour_coordinates[current_colour][0], self.colour_coordinates[current_colour][1], 12), -90, -90, 0)   
+                    time.sleep(result[2]/self.sleep_divider)
+                                    
+                    block_rotation = getAngle(self.colour_coordinates[current_colour][0], self.colour_coordinates[current_colour][1], -90)
+                    Board.setBusServoPulse(self.servo_2_id, block_rotation, self.gripper_closed)
+                    time.sleep(self.sleep_time)
+
+                    self.arm_kinematics.setPitchRangeMoving((self.colour_coordinates[current_colour][0], self.colour_coordinates[current_colour][1], self.colour_coordinates[current_colour][2] + 3), -90, -90, 0, 500)
+                    time.sleep(self.sleep_time)
+                                        
+                    self.arm_kinematics.setPitchRangeMoving((self.colour_coordinates[current_colour]), -90, -90, 0, 1000)
+                    time.sleep(self.sleep_time)
+
+                    Board.setBusServoPulse(1, self.gripper_closed - self.gripper_open, self.gripper_closed)
+                    time.sleep(self.sleep_time)
+
+                    self.arm_kinematics.setPitchRangeMoving((self.colour_coordinates[current_colour][0], self.colour_coordinates[current_colour][1], 12), -90, -90, 0, 800)
+                    time.sleep(self.sleep_time)
+
+                    self.move_home()
+
+                    current_colour = 'None'
+                    self.set_led_colour(current_colour)
+                    time.sleep(3*self.sleep_time)
 
 if __name__ == "__main__":
     detector = ColorDetector()
@@ -154,7 +129,6 @@ if __name__ == "__main__":
                 move_handler.track = detector.track
                 
                 if move_handler.first_move:
-                    print("Setting start_pick_up to True")
                     move_handler.start_pick_up = True
             
             key = cv2.waitKey(1)
