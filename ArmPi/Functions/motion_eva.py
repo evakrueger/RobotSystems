@@ -117,8 +117,8 @@ class MoveHandler:
                 self.action_finish = True
             elif not self.first_move and not self.unreachable:
                 if self.track:
-                    if not self.__isRunning:
-                        continue
+                    # if not self.__isRunning:
+                    #     continue
                     self.AK.setPitchRangeMoving((self.world_X, self.world_Y - 2, 5), -90, -90, 0, 20)
                     time.sleep(0.02)
                     self.track = False
