@@ -39,10 +39,14 @@ class MoveHandler:
         self.detect_color = 'None'
         self.action_finish = True
         self.rotation_angle = 0
-        self.world_X = 0, self.world_Y = 0
-        self.world_x = 0, self.world_y = 0
-        self.center_list = [], self.count = 0
-        self.start_pick_up = False, self.first_move = True
+        self.world_X = 0
+        self.world_Y = 0
+        self.world_x = 0
+        self.world_y = 0
+        self.center_list = []
+        self.count = 0
+        self.start_pick_up = False
+        self.first_move = True
 
     # Robotic arm moving thread
     def move(self):
