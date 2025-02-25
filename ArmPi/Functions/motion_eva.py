@@ -119,12 +119,15 @@ class MoveHandler:
                 if self.track:
                     # if not self.__isRunning:
                     #     continue
+                    print("self.track is True")
                     self.AK.setPitchRangeMoving((self.world_X, self.world_Y - 2, 5), -90, -90, 0, 20)
                     time.sleep(0.02)
                     self.track = False
                 if self.start_pick_up:
+                    print("self.start_pick_up is True")
                     self.pick_up_object()
                 else:
+                    print("self.start_pick_up is False")
                     time.sleep(0.01)
         else:
             if self._stop:
