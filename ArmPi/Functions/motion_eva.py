@@ -30,8 +30,9 @@ def setBuzzer(timer):
     Board.setBuzzer(0)
     
 class MoveHandler:
-    def __init__(self, AK, servo1):
+    def __init__(self, perception):
         print("mover INIT")
+        self.perception = perception
         self.AK = AK
         self.servo1 = servo1
         self.__isRunning = False
@@ -105,7 +106,7 @@ if __name__ == "__main__":
     detector = ColorDetector()
     my_camera = Camera.Camera()
     my_camera.camera_open()
-    move_handler = MoveHandler(AK, servo1)
+    move_handler = MoveHandler(detector)
 
     
     move_thread = threading.Thread(target=move_handler.move)

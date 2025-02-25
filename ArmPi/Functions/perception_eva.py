@@ -19,7 +19,6 @@ class ColorDetector:
         # :param target_color: The color name (string) to be detected (e.g., 'red').
         self.img = None
         self.target_colors = target_colors  # Store the target color for detection.
-        self.detect_color = 'None'
         self.size = (640, 480)
         self.get_roi = False
         self.area_max = 0
@@ -34,6 +33,7 @@ class ColorDetector:
         self.track = False
         self.last_x, self.last_y = 0, 0
         self.world_x, self.world_y = 0, 0
+        self.current_color = 'None'
 
     def getAreaMaxContour(self, contours):
         contour_area_temp = 0
@@ -75,6 +75,7 @@ class ColorDetector:
         for color in self.target_colors:
             # Check if the color exists in the color range dictionary
             if color in color_range_eva:
+                self.current_color = color
                 frame_mask = cv2.inRange(img_processed, color_range_eva[color][0], color_range_eva[color][1])  # Create a mask for this color
                 opened = cv2.morphologyEx(frame_mask, cv2.MORPH_OPEN, np.ones((6, 6), np.uint8))  # Remove small noise
                 closed = cv2.morphologyEx(opened, cv2.MORPH_CLOSE, np.ones((6, 6), np.uint8))  # Fill small holes
