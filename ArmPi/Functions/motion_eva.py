@@ -32,18 +32,17 @@ def setBuzzer(timer):
 class MoveHandler:
     def __init__(self, color_tracker):
         self.color_tracker = color_tracker
-        self.track
-        self._stop
-        self.get_roi
-        self.unreachable
-        self.__isRunning
-        self.detect_color
-        self.action_finish
-        self.rotation_angle
-        self.world_X, self.world_Y
-        self.world_x, self.world_y
-        self.center_list, self.count
-        self.start_pick_up, self.first_move
+        self.track = False
+        self._stop = False
+        self.get_roi = False
+        self.unreachable = False
+        self.detect_color = 'None'
+        self.action_finish = True
+        self.rotation_angle = 0
+        self.world_X = 0, self.world_Y = 0
+        self.world_x = 0, self.world_y = 0
+        self.center_list = [], self.count = 0
+        self.start_pick_up = False, self.first_move = True
 
     # Robotic arm moving thread
     def move(self):
@@ -56,7 +55,6 @@ class MoveHandler:
         while True:
             if first_move and start_pick_up: # When an object is first detected               
                 action_finish = False
-                #set_rgb(detect_color)
                 setBuzzer(0.1)               
                 result = AK.setPitchRangeMoving((self.color_tracker.last_x, self.color_tracker.last_y - 2, 5), -90, -90, 0) # If the running time parameter is not filled in, the running time will be adaptive.
                 if result == False:
@@ -68,7 +66,6 @@ class MoveHandler:
                 first_move = False
                 action_finish = True
             elif not first_move and not unreachable: # This is not the first time an object is detected
-                #set_rgb(detect_color)
                 if track: # If it is the tracking stage # Stop and exit flag detectioe
                     AK.setPitchRangeMoving((self.color_tracker.last_x, self.color_tracker.last_y - 2, 5), -90, -90, 0, 20)
                     time.sleep(0.02)                    
@@ -119,7 +116,6 @@ class MoveHandler:
                     get_roi = False
                     action_finish = True
                     start_pick_up = False
-                    #set_rgb(detect_color)
                 else:
                     time.sleep(0.01)
                     
@@ -146,7 +142,6 @@ if __name__ == "__main__":
             cv2.imshow('annotated image', annotated_img)
             
             if detected_color_temp:
-                # print("object detected")
                 move_handler.detect_color = detected_color_temp
                 move_handler.world_X, move_handler.world_Y = detector.world_x, detector.world_y
                 move_handler.track = detector.track
