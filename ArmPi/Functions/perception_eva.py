@@ -14,7 +14,7 @@ import HiwonderSDK.Board as Board
 from CameraCalibration.CalibrationConfig import *
 
 class ColorDetector:
-    def __init__(self, target_colors):
+    def __init__(self, target_colors=('blue','red','green')):
         # Initialize the ColorDetector with a target color.
         # :param target_color: The color name (string) to be detected (e.g., 'red').
         self.img = None
@@ -119,10 +119,8 @@ class ColorDetector:
         return self.img
 
 if __name__ == "__main__":    
-    target_colors = ('blue','red','green')
-
-    # Initialize the color detector for red objects
-    detector = ColorDetector(target_colors=target_colors)
+    # Initialize the color detector
+    detector = ColorDetector()
 
     # Initialize and open the camera
     my_camera = Camera.Camera()
