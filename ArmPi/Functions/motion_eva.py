@@ -14,6 +14,7 @@ from CameraCalibration.CalibrationConfig import *
 import time
 from perception_eva import ColorDetector
 
+AK = ArmIK()
 # class RoboticArm:
 #     def __init__(self, target_colors=('red', 'green', 'blue')):
 #         self.detector = ColorDetector(target_colors)
