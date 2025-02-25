@@ -54,7 +54,6 @@ class MoveHandler:
         while True:
             if self.perception.current_color != "None":
                 current_color = self.perception.current_color
-                self.set_led_colour(current_color)
 
                 desired_x, desired_y, desired_angle = self.perception.last_x, self.perception.last_y, self.perception.rotation_angle
                 result = self.arm_kinematics.setPitchRangeMoving((desired_x, desired_y, self.desired_approach_height_grasp), -90, -90, 0)  
@@ -99,7 +98,6 @@ class MoveHandler:
                     self.move_home()
 
                     current_color = 'None'
-                    self.set_led_colour(current_color)
                     time.sleep(3*self.sleep_time)
 
 if __name__ == "__main__":
