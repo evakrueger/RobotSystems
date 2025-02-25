@@ -301,12 +301,13 @@ if __name__ == "__main__":
     start_pick_up = False
     detect_color = 'None'
     world_X, world_Y = 0, 0
+    world_x, world_y = 0, 0
     track = False
     __isRunning = True  # Ensure move() can execute
     _stop = False
 
     # Start move function in a separate thread
-    move_thread = threading.Thread(target=move(world_X, world_Y))
+    move_thread = threading.Thread(target=move(world_x, world_y))
     move_thread.daemon = True
     move_thread.start()
 
@@ -322,8 +323,11 @@ if __name__ == "__main__":
             cv2.imshow('annotated image', annotated_img)  # Show the processed frame
             
             if detected_color_temp:  # If an object is detected
+                print("object detected")
                 detect_color = detected_color_temp
+                print(f"color: {detect_color}")
                 world_X, world_Y = detector.world_x, detector.world_y
+                print(f"coords: {world_X}, {world_Y}")
                 track = detector.track
                 
                 if first_move:
