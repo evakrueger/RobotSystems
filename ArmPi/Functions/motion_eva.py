@@ -150,6 +150,18 @@ from perception_eva import ColorDetector
 #                     self.move_to_initial_position()
 #                 time.sleep(0.01)
 
+# initial position
+def initMove():
+    Board.setBusServoPulse(1, servo1 - 50, 300)
+    Board.setBusServoPulse(2, 500, 500)
+    AK.setPitchRangeMoving((0, 10, 10), -30, -30, -90, 1500)
+
+def setBuzzer(timer):
+    Board.setBuzzer(0)
+    Board.setBuzzer(1)
+    time.sleep(timer)
+    Board.setBuzzer(0)
+
 # Robotic arm moving thread
 def move():
     global rect

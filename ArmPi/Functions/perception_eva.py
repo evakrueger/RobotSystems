@@ -115,7 +115,7 @@ class ColorDetector:
         self.last_x, self.last_y = self.world_x, self.world_y
         self.track = True
         # Print out the coordinates and the color detected
-        print(f"{detected_color}: ({self.world_x},{self.world_y})")
+        # print(f"{detected_color}: ({self.world_x},{self.world_y})")
         return self.img
 
 if __name__ == "__main__":    
