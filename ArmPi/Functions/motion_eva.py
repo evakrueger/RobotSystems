@@ -60,13 +60,12 @@ class MoveHandler:
             if self.color_tracker.current_color != "None":
                 current_colour = self.color_tracker.current_color
                 desired_x, desired_y, desired_angle = self.color_tracker.last_x, self.color_tracker.last_y, self.color_tracker.rotation_angle
-                movement = AK.setPitchRangeMoving((desired_x, desired_y - 2, 5), -90, -90, 0) 
-                if movement:
+                result = AK.setPitchRangeMoving((desired_x, desired_y - 2, 5), -90, -90, 0) 
+                if result:
                     time.sleep(result[2]/self.sleep_divider)
                     if self.first_move and self.start_pick_up: # When an object is first detected               
                         self.action_finish = False
                         setBuzzer(0.1)               
-                        result = AK.setPitchRangeMoving((desired_x, desired_y - 2, 5), -90, -90, 0) # If the running time parameter is not filled in, the running time will be adaptive.
                         if result == False:
                             self.unreachable = True
                         else:
