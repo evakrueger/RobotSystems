@@ -113,6 +113,7 @@ class MoveHandler:
                     time.sleep(1.5)
 
                     self.detect_color = 'None'
+                    self.color_tracker.current_color = 'None'
                     self.first_move = True
                     self.get_roi = False
                     self.action_finish = True
