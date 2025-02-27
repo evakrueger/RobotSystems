@@ -75,7 +75,7 @@ class MoveHandler:
                     time.sleep(0.02)                    
                     self.track = False
                 if self.start_pick_up: #If the object has not moved for a while, start gripping
-                    self.action_finish = False # Stop and exit flag detectioe
+                    self.action_finish = False # Stop and exit flag detection
                     Board.setBusServoPulse(1, servo1 - 280, 500)  # Claws spread
                     # Calculate the angle by which the gripper needs to be rotated
                     servo2_angle = getAngle(self.color_tracker.last_x, self.color_tracker.last_y, self.color_tracker.rotation_angle)
