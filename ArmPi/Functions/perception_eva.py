@@ -101,6 +101,7 @@ class ColorDetector:
 
             img_centerx, img_centery = getCenter(rect, roi, self.size, square_length)  # Get the center coordinates
             self.world_x, self.world_y = convertCoordinate(img_centerx, img_centery, self.size)  # Convert to real world coordinates
+            self.current_color = detected_color
             return box, detected_color
         
         return None, None
