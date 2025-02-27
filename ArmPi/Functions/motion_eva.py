@@ -110,6 +110,9 @@ class MoveHandler:
                     self.get_roi = False
                     self.action_finish = True
                     self.start_pick_up = False
+                    self.color_tracker.last_x = 0
+                    self.color_tracker.last_y = 0
+                    self.color_tracker.rotation_angle = 0
                 else:
                     print('debug location 3')
                     time.sleep(0.01)
