@@ -60,31 +60,23 @@ class MoveHandler:
             if self.color_tracker.current_color != "None":
                 current_color = self.color_tracker.current_color
                 desired_x, desired_y, desired_angle = self.color_tracker.last_x, self.color_tracker.last_y, self.color_tracker.rotation_angle
-                print('move 1')
                 result = AK.setPitchRangeMoving((desired_x, desired_y - 2, 5), -90, -90, 0) 
                 if result:
                     time.sleep(result[2]/1000)
-                    print('move 2')
                     AK.setPitchRangeMoving((desired_x, desired_y - 2, 5), -90, -90, 0, 20)
                     time.sleep(0.02)                    
                     self.track = False
                     self.action_finish = False # Stop and exit flag detection
-                    print("claws spread")
                     Board.setBusServoPulse(1, servo1 - 280, 500)  # Claws spread
                     # Calculate the angle by which the gripper needs to be rotated
-                    print('rotate')
                     servo2_angle = getAngle(desired_x, desired_y, desired_angle)
                     Board.setBusServoPulse(2, servo2_angle, 500)
                     time.sleep(0.8)
-                    print('lower height')
                     AK.setPitchRangeMoving((desired_x, desired_y, 2), -90, -90, 0, 1000)  # lower height
                     time.sleep(2)
-                    print('close gripper')
                     Board.setBusServoPulse(1, servo1, 500)  # Gripper closed
                     time.sleep(1)
-                    
                     Board.setBusServoPulse(2, 500, 500)
-                    print('raise arm')
                     AK.setPitchRangeMoving((desired_x, desired_y, 12), -90, -90, 0, 1000)  # Robotic arm raised
                     time.sleep(1)
                     

@@ -76,7 +76,6 @@ class ColorDetector:
         for color in self.target_colors:
             # Check if the color exists in the color range dictionary
             if color in color_range_eva:
-                self.current_color = color
                 frame_mask = cv2.inRange(img_processed, color_range_eva[color][0], color_range_eva[color][1])  # Create a mask for this color
                 opened = cv2.morphologyEx(frame_mask, cv2.MORPH_OPEN, np.ones((6, 6), np.uint8))  # Remove small noise
                 closed = cv2.morphologyEx(opened, cv2.MORPH_CLOSE, np.ones((6, 6), np.uint8))  # Fill small holes
