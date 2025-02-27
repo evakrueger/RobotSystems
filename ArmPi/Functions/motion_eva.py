@@ -58,7 +58,7 @@ class MoveHandler:
         }
         while True:
             if self.color_tracker.current_color != "None":
-                current_colour = self.color_tracker.current_color
+                current_color = self.color_tracker.current_color
                 desired_x, desired_y, desired_angle = self.color_tracker.last_x, self.color_tracker.last_y, self.color_tracker.rotation_angle
                 print('move 1')
                 result = AK.setPitchRangeMoving((desired_x, desired_y - 2, 5), -90, -90, 0) 
@@ -72,40 +72,41 @@ class MoveHandler:
                     print("claws spread")
                     Board.setBusServoPulse(1, servo1 - 280, 500)  # Claws spread
                     # Calculate the angle by which the gripper needs to be rotated
-                    print('rotate?')
+                    print('rotate')
                     servo2_angle = getAngle(desired_x, desired_y, desired_angle)
-                    print('claws close?')
                     Board.setBusServoPulse(2, servo2_angle, 500)
                     time.sleep(0.8)
-                    print('where is this going?')
+                    print('lower height')
                     AK.setPitchRangeMoving((desired_x, desired_y, 2), -90, -90, 0, 1000)  # lower height
                     time.sleep(2)
-                    
+                    print('close gripper')
                     Board.setBusServoPulse(1, servo1, 500)  # Gripper closed
                     time.sleep(1)
                     
                     Board.setBusServoPulse(2, 500, 500)
+                    print('raise arm')
                     AK.setPitchRangeMoving((desired_x, desired_y, 12), -90, -90, 0, 1000)  # Robotic arm raised
                     time.sleep(1)
                     
                     # Classify and place blocks of different colors
-                    result = AK.setPitchRangeMoving((coordinate[current_colour][0], coordinate[current_colour][1], 12), -90, -90, 0)   
+                    print(f"_______CURRENT COLOR: {current_color}")
+                    result = AK.setPitchRangeMoving((coordinate[current_color][0], coordinate[current_color][1], 12), -90, -90, 0)   
                     time.sleep(result[2]/1000)
                     
-                    servo2_angle = getAngle(coordinate[current_colour][0], coordinate[current_colour][1], -90)
+                    servo2_angle = getAngle(coordinate[current_color][0], coordinate[current_color][1], -90)
                     Board.setBusServoPulse(2, servo2_angle, 500)
                     time.sleep(0.5)
 
-                    AK.setPitchRangeMoving((coordinate[current_colour][0], coordinate[current_colour][1], coordinate[current_colour][2] + 3), -90, -90, 0, 500)
+                    AK.setPitchRangeMoving((coordinate[current_color][0], coordinate[current_color][1], coordinate[current_color][2] + 3), -90, -90, 0, 500)
                     time.sleep(0.5)
                     
-                    AK.setPitchRangeMoving((coordinate[current_colour]), -90, -90, 0, 1000)
+                    AK.setPitchRangeMoving((coordinate[current_color]), -90, -90, 0, 1000)
                     time.sleep(0.8)
                     
                     Board.setBusServoPulse(1, servo1 - 200, 500)  # Open your claws and drop the object
                     time.sleep(0.8)
                                         
-                    AK.setPitchRangeMoving((coordinate[current_colour][0], coordinate[current_colour][1], 12), -90, -90, 0, 800)
+                    AK.setPitchRangeMoving((coordinate[current_color][0], coordinate[current_color][1], 12), -90, -90, 0, 800)
                     time.sleep(0.8)
 
                     initMove()  # Return to initial position
