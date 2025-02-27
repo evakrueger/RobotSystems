@@ -60,7 +60,8 @@ class MoveHandler:
             if self.color_tracker.current_color != "None":
                 current_colour = self.color_tracker.current_color
                 desired_x, desired_y, desired_angle = self.color_tracker.last_x, self.color_tracker.last_y, self.color_tracker.rotation_angle
-            if result:
+                movement = self.arm_kinematics.setPitchRangeMoving((desired_x, desired_y, self.desired_approach_height_grasp), -90, -90, 0)  
+            if movement:
                 time.sleep(result[2]/self.sleep_divider)
                 if self.first_move and self.start_pick_up: # When an object is first detected               
                     self.action_finish = False
