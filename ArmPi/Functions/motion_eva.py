@@ -62,7 +62,7 @@ class MoveHandler:
                 desired_x, desired_y, desired_angle = self.color_tracker.last_x, self.color_tracker.last_y, self.color_tracker.rotation_angle
                 result = AK.setPitchRangeMoving((desired_x, desired_y - 2, 5), -90, -90, 0) 
                 if result:
-                    time.sleep(result[2]/self.sleep_divider)
+                    time.sleep(result[2]/1000)
                     if self.first_move and self.start_pick_up: # When an object is first detected               
                         self.action_finish = False
                         setBuzzer(0.1)               
@@ -70,7 +70,6 @@ class MoveHandler:
                             self.unreachable = True
                         else:
                             self.unreachable = False
-                        time.sleep(result[2]/1000) # The third item of the return parameter is time
                         self.start_pick_up = False
                         self.first_move = False
                         self.action_finish = True
