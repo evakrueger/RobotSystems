@@ -71,10 +71,12 @@ class MoveHandler:
                 self.action_finish = True
             elif not self.first_move and not self.unreachable: # This is not the first time an object is detected
                 if self.track: # If it is the tracking stage # Stop and exit flag detection
+                    print('debug location 1')
                     AK.setPitchRangeMoving((self.color_tracker.last_x, self.color_tracker.last_y - 2, 5), -90, -90, 0, 20)
                     time.sleep(0.02)                    
                     self.track = False
                 if self.start_pick_up: #If the object has not moved for a while, start gripping
+                    print('debug location 2')
                     self.action_finish = False # Stop and exit flag detection
                     Board.setBusServoPulse(1, servo1 - 280, 500)  # Claws spread
                     # Calculate the angle by which the gripper needs to be rotated
@@ -121,6 +123,7 @@ class MoveHandler:
                     self.action_finish = True
                     self.start_pick_up = False
                 else:
+                    print('debug location 3')
                     time.sleep(0.01)
                     
 
