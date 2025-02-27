@@ -75,7 +75,7 @@ class MoveHandler:
                     AK.setPitchRangeMoving((self.color_tracker.last_x, self.color_tracker.last_y - 2, 5), -90, -90, 0, 20)
                     time.sleep(0.02)                    
                     self.track = False
-                if self.start_pick_up: #If the object has not moved for a while, start gripping
+                # if self.start_pick_up: #If the object has not moved for a while, start gripping
                     print('debug location 2')
                     self.action_finish = False # Stop and exit flag detection
                     Board.setBusServoPulse(1, servo1 - 280, 500)  # Claws spread
